@@ -24,11 +24,11 @@ public class Qvar_srcm_stmt_signature_kindTrad extends Qvar_srcm_stmt_signature_
     
     public void add(final jedd.internal.RelationContainer in) {
         Iterator it =
-          new jedd.internal.RelationContainer(new Attribute[] { var.v(), srcm.v(), kind.v(), stmt.v(), signature.v() },
-                                              new PhysicalDomain[] { V1.v(), T1.v(), FD.v(), ST.v(), H2.v() },
-                                              ("in.iterator(new jedd.Attribute[...]) at /home/olhotak/soot-t" +
-                                               "runk/src/soot/jimple/paddle/queue/Qvar_srcm_stmt_signature_k" +
-                                               "indTrad.jedd:41,22-24"),
+          new jedd.internal.RelationContainer(new Attribute[] { stmt.v(), signature.v(), kind.v(), srcm.v(), var.v() },
+                                              new PhysicalDomain[] { ST.v(), H2.v(), FD.v(), T1.v(), V1.v() },
+                                              ("in.iterator(new jedd.Attribute[...]) at /home/olhotak/soot-r" +
+                                               "esolving2/src/soot/jimple/paddle/queue/Qvar_srcm_stmt_signat" +
+                                               "ure_kindTrad.jedd:41,22-24"),
                                               in).iterator(new Attribute[] { var.v(), srcm.v(), stmt.v(), signature.v(), kind.v() });
         while (it.hasNext()) {
             Object[] tuple = (Object[]) it.next();

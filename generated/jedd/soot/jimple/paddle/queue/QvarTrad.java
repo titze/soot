@@ -20,8 +20,9 @@ public class QvarTrad extends Qvar {
         Iterator it =
           new jedd.internal.RelationContainer(new Attribute[] { var.v() },
                                               new PhysicalDomain[] { V1.v() },
-                                              ("in.iterator(new jedd.Attribute[...]) at /home/olhotak/soot-t" +
-                                               "runk/src/soot/jimple/paddle/queue/QvarTrad.jedd:37,22-24"),
+                                              ("in.iterator(new jedd.Attribute[...]) at /home/olhotak/soot-r" +
+                                               "esolving2/src/soot/jimple/paddle/queue/QvarTrad.jedd:37,22-2" +
+                                               "4"),
                                               in).iterator(new Attribute[] { var.v() });
         while (it.hasNext()) {
             Object[] tuple = (Object[]) it.next();
