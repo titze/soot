@@ -46,7 +46,7 @@ abstract public class AbstractInvokeExpr implements InvokeExpr
         return methodRef;
     }
 
-    public SootMethod getMethod()
+    public SootMethod XgetMethod()
     {
         return methodRef.resolve();
     }

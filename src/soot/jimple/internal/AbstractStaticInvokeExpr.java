@@ -52,7 +52,7 @@ public abstract class AbstractStaticInvokeExpr extends AbstractInvokeExpr implem
         if (o instanceof AbstractStaticInvokeExpr)
         {
             AbstractStaticInvokeExpr ie = (AbstractStaticInvokeExpr)o;
-            if (!(getMethod().equals(ie.getMethod()) && 
+            if (!(XgetMethod().equals(ie.XgetMethod()) && 
                   argBoxes.length == ie.argBoxes.length))
                 return false;
             for (int i = 0; i < argBoxes.length; i++)
@@ -66,7 +66,7 @@ public abstract class AbstractStaticInvokeExpr extends AbstractInvokeExpr implem
     /** Returns a hash code for this object, consistent with structural equality. */
     public int equivHashCode() 
     {
-        return getMethod().equivHashCode();
+        return XgetMethod().equivHashCode();
     }
 
     public abstract Object clone();
