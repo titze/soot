@@ -99,6 +99,7 @@ public class SootMethod
         this.name = name;
         this.parameterTypes = new ArrayList();
         this.parameterTypes.addAll(parameterTypes);
+        this.parameterTypes = Collections.unmodifiableList(this.parameterTypes);
         this.returnType = returnType;
         Scene.v().getMethodNumberer().add(this);
         subsignature =
@@ -194,7 +195,13 @@ public class SootMethod
 
     /** Sets the name of this method. */
     public void setName(String name) {
+        boolean wasDeclared = isDeclared;
+        SootClass oldDeclaringClass = declaringClass;
+        if( wasDeclared ) oldDeclaringClass.removeMethod(this);
         this.name = name;
+        subsignature =
+            Scene.v().getSubSigNumberer().findOrAdd(getSubSignature());
+        if( wasDeclared) oldDeclaringClass.addMethod(this);
     }
 
     /** Gets the modifiers of this method.
@@ -218,7 +225,13 @@ public class SootMethod
 
     /** Sets the return type of this method. */
     public void setReturnType(Type t) {
+        boolean wasDeclared = isDeclared;
+        SootClass oldDeclaringClass = declaringClass;
+        if( wasDeclared ) oldDeclaringClass.removeMethod(this);
         returnType = t;
+        subsignature =
+            Scene.v().getSubSigNumberer().findOrAdd(getSubSignature());
+        if( wasDeclared) oldDeclaringClass.addMethod(this);
     }
 
     /** Returns the number of parameters taken by this method. */
@@ -232,10 +245,25 @@ public class SootMethod
     }
 
     /**
-     * Returns a backed list of the parameter types of this method.
+     * Returns a read-only list of the parameter types of this method.
      */
     public List getParameterTypes() {
         return parameterTypes;
+    }
+
+    /**
+     * Changes the set of parameter types of this method.
+     */
+    public void setParameterTypes( List l ) {
+        boolean wasDeclared = isDeclared;
+        SootClass oldDeclaringClass = declaringClass;
+        if( wasDeclared ) oldDeclaringClass.removeMethod(this);
+        List al = new ArrayList();
+        al.addAll(l);
+        this.parameterTypes = Collections.unmodifiableList(al);
+        subsignature =
+            Scene.v().getSubSigNumberer().findOrAdd(getSubSignature());
+        if( wasDeclared) oldDeclaringClass.addMethod(this);
     }
 
     /**
@@ -353,13 +381,6 @@ public class SootMethod
             exceptions = new ArrayList();
 
         return exceptions;
-    }
-
-    /** Sets the list of parameter types for this method as given. 
-     * This method makes a copy of the given list. */
-    public void setParameterTypes(List parameterTypes) {
-        this.parameterTypes = new ArrayList();
-        this.parameterTypes.addAll(parameterTypes);
     }
 
     /**
