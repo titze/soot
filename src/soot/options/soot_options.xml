@@ -310,6 +310,23 @@ unable to find a <tt>.java</tt> file.
 			</value>
 		</multiopt>
 		<boolopt>
+			<name>Force complete resolver</name>
+			<alias>full-resolver</alias>
+			<short_desc>Force transitive resolving of referenced classes</short_desc>
+			<long_desc>
+Normally, Soot resolves only that application classes and any classes that they
+refer to, along with any classes it needs for the Jimple typing, but it does not
+transitively resolve references in these additional classes that were resolved
+only because they were referenced. This switch forces full transitive resolution
+of all references found in all classes that are resolved, regardless of why they
+were resolved.
+
+In whole-program mode, class resolution is always fully transitive. Therefore,
+in whole-program mode, this switch has no effect, and class resolution is
+always performed as if it were turned on.
+</long_desc>
+		</boolopt>
+		<boolopt>
 			<name>Allow Phantom References</name>
 			<alias>allow-phantom-refs</alias>
 			<short_desc>Allow unresolved classes; may cause errors</short_desc>

@@ -40,6 +40,11 @@ public class SootResolver
 {
     public SootResolver (Singletons.Global g) {
 	for(int i=0;i<=maxresolvinglevel;i++) classesToResolve[i]=new LinkedList();
+        if( Options.v().whole_program() || Options.v().full_resolver() ) {
+            G.v().out.println("If this was actually implemented, Soot would be using the FULL resolver now.");
+        } else {
+            G.v().out.println("If this was actually implemented, Soot would be using the FAST resolver now.");
+        }
     }
 
     public static SootResolver v() { return G.v().soot_SootResolver();}

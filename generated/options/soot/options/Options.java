@@ -236,6 +236,11 @@ public class Options extends OptionsBase {
            }
   
             else if( false 
+            || option.equals( "full-resolver" )
+            )
+                full_resolver = true;
+  
+            else if( false 
             || option.equals( "allow-phantom-refs" )
             )
                 allow_phantom_refs = true;
@@ -852,6 +857,10 @@ public class Options extends OptionsBase {
     }
     public void set_src_prec( int setting ) { src_prec = setting; }
     private int src_prec = 0;
+    public boolean full_resolver() { return full_resolver; }
+    private boolean full_resolver = false;
+    public void set_full_resolver( boolean setting ) { full_resolver = setting; }
+  
     public boolean allow_phantom_refs() { return allow_phantom_refs; }
     private boolean allow_phantom_refs = false;
     public void set_allow_phantom_refs( boolean setting ) { allow_phantom_refs = setting; }
@@ -1003,6 +1012,7 @@ public class Options extends OptionsBase {
 +padVal(" c class (default)", "Favour class files as Soot source" )
 +padVal(" J jimple", "Favour Jimple files as Soot source" )
 +padVal(" java", "Favour Java files as Soot source" )
++padOpt(" -full-resolver", "Force transitive resolving of referenced classes" )
 +padOpt(" -allow-phantom-refs", "Allow unresolved classes; may cause errors" )
 +"\nOutput Options:\n"
       
