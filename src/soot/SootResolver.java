@@ -166,6 +166,11 @@ public class SootResolver
     private void addToResolveWorklist(SootClass sc) {
         if( !resolvedClasses.contains(sc) ) toResolveWorklist.add(sc);
     }
+
+    /** Returns the list of SootClasses that have been resolved. */
+    public List/*SootClass*/ resolvedClasses() {
+        return Collections.unmodifiableList(new ArrayList(resolvedClasses));
+    }
 }
 
 

@@ -909,5 +909,9 @@ public class Scene  //extends AbstractHost
             Type type ) {
         return new AbstractSootFieldRef(declaringClass, name, type);
     }
+    /** Returns the list of SootClasses that have been resolved. */
+    public List/*SootClass*/ resolvedClasses() {
+        return SootResolver.v().resolvedClasses();
+    }
 }
 

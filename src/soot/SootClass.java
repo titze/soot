@@ -465,7 +465,8 @@ public class SootClass extends AbstractHost implements Numberable
         if(found)
             return foundMethod;
         else
-            throw new RuntimeException("couldn't find method");
+            throw new RuntimeException("couldn't find method "+name+"("+parameterTypes+") in "+this);
+
     }
 
     
@@ -496,11 +497,10 @@ public class SootClass extends AbstractHost implements Numberable
                 }
             }
         }
-
         if(found)
             return foundMethod;
         else
-            throw new RuntimeException("couldn't find method");
+            throw new RuntimeException("couldn't find method "+name+"(*) in "+this);
     }
 
     /**
