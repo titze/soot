@@ -23,11 +23,11 @@ public class Qsrcm_stmt_kind_tgtm_src_dstDebug extends Qsrcm_stmt_kind_tgtm_src_
     
     public void add(final jedd.internal.RelationContainer in) {
         Iterator it =
-          new jedd.internal.RelationContainer(new Attribute[] { dst.v(), src.v(), srcm.v(), tgtm.v(), kind.v(), stmt.v() },
-                                              new PhysicalDomain[] { V2.v(), V1.v(), T1.v(), T2.v(), FD.v(), ST.v() },
+          new jedd.internal.RelationContainer(new Attribute[] { dst.v(), tgtm.v(), kind.v(), srcm.v(), stmt.v(), src.v() },
+                                              new PhysicalDomain[] { V2.v(), T2.v(), FD.v(), T1.v(), ST.v(), V1.v() },
                                               ("in.iterator(new jedd.Attribute[...]) at /home/olhotak/soot-r" +
-                                               "ef/src/soot/jimple/paddle/queue/Qsrcm_stmt_kind_tgtm_src_dst" +
-                                               "Debug.jedd:39,22-24"),
+                                               "ef2/src/soot/jimple/paddle/queue/Qsrcm_stmt_kind_tgtm_src_ds" +
+                                               "tDebug.jedd:39,22-24"),
                                               in).iterator(new Attribute[] { srcm.v(), stmt.v(), kind.v(), tgtm.v(), src.v(), dst.v() });
         while (it.hasNext()) {
             Object[] tuple = (Object[]) it.next();

@@ -17,7 +17,7 @@ public class BDDP2Sets extends AbsP2Sets {
         return new BDDPointsToSet(new jedd.internal.RelationContainer(new jedd.Attribute[] { objc.v(), obj.v() },
                                                                       new jedd.PhysicalDomain[] { C2.v(), H1.v() },
                                                                       ("new soot.jimple.paddle.BDDPointsToSet(...) at /home/olhotak/" +
-                                                                       "soot-ref/src/soot/jimple/paddle/BDDP2Sets.jedd:39,15-18"),
+                                                                       "soot-ref2/src/soot/jimple/paddle/BDDP2Sets.jedd:39,15-18"),
                                                                       jedd.internal.Jedd.v().compose(jedd.internal.Jedd.v().read(prop.pointsTo),
                                                                                                      jedd.internal.Jedd.v().literal(new Object[] { ctxt, v },
                                                                                                                                     new jedd.Attribute[] { varc.v(), var.v() },
@@ -29,7 +29,7 @@ public class BDDP2Sets extends AbsP2Sets {
         return new BDDPointsToSet(new jedd.internal.RelationContainer(new jedd.Attribute[] { objc.v(), obj.v() },
                                                                       new jedd.PhysicalDomain[] { C2.v(), H1.v() },
                                                                       ("new soot.jimple.paddle.BDDPointsToSet(...) at /home/olhotak/" +
-                                                                       "soot-ref/src/soot/jimple/paddle/BDDP2Sets.jedd:43,15-18"),
+                                                                       "soot-ref2/src/soot/jimple/paddle/BDDP2Sets.jedd:43,15-18"),
                                                                       jedd.internal.Jedd.v().replace(jedd.internal.Jedd.v().compose(jedd.internal.Jedd.v().read(prop.fieldPt),
                                                                                                                                     jedd.internal.Jedd.v().literal(new Object[] { ctxt, adf.base(), adf.field() },
                                                                                                                                                                    new jedd.Attribute[] { basec.v(), base.v(), fld.v() },

@@ -38,6 +38,7 @@ import soot.jimple.toolkits.base.*;
 import soot.dava.*;
 import soot.dava.toolkits.base.misc.*;
 import soot.jimple.*;
+import soot.options.*;
 
 /*
  * Incomplete and inefficient implementation.
@@ -69,6 +70,7 @@ public class SootClass extends AbstractHost implements Numberable
 
     protected boolean isInScene;
     protected SootClass superClass;
+    protected SootClass outerClass;
 
     protected boolean isPhantom;
     
@@ -83,6 +85,7 @@ public class SootClass extends AbstractHost implements Numberable
         this.modifiers = modifiers;
         refType = RefType.v(name);
         refType.setSootClass(this);
+        if(Options.v().debug_resolver()) System.out.println("created "+name);
     }
 
     /**
@@ -428,7 +431,6 @@ public class SootClass extends AbstractHost implements Numberable
                 }
             }
         }
-
         if(found)
             return foundMethod;
         else
@@ -637,7 +639,7 @@ public class SootClass extends AbstractHost implements Numberable
     public SootClass getSuperclass() 
     {
         if(superClass == null) 
-            throw new RuntimeException("no superclass");
+            throw new RuntimeException("no superclass for "+getName());
         else
             return superClass;
     }
@@ -651,6 +653,21 @@ public class SootClass extends AbstractHost implements Numberable
         superClass = c;
     }
 
+    public boolean hasOuterClass(){
+        return outerClass != null;
+    }
+
+    public SootClass getOuterClass(){
+        if (outerClass == null)
+            throw new RuntimeException("no outer class");
+        else 
+            return outerClass;
+    }
+
+    public void setOuterClass(SootClass c){
+        outerClass = c;
+    }
+    
     /**
         Returns the name of this class.
     */

@@ -112,10 +112,16 @@ public class PolyglotMethodSource implements MethodSource {
     }
 
     public void addAssertInits(soot.Body body){
-    
+        // if class is inner get desired assertion status from outer most class
+        soot.SootClass assertStatusClass = body.getMethod().getDeclaringClass();
+        HashMap innerMap = soot.javaToJimple.InitialResolver.v().getInnerClassInfoMap();
+        while ((innerMap != null) && (innerMap.containsKey(assertStatusClass))){
+            assertStatusClass = ((InnerClassInfo)innerMap.get(assertStatusClass)).getOuterClass();
+        }
+        
         //System.out.println("needed assert method");
         // field ref
-        soot.SootFieldRef field = soot.Scene.v().makeFieldRef(body.getMethod().getDeclaringClass(), "class$"+body.getMethod().getDeclaringClass().getName(), soot.RefType.v("java.lang.Class"));
+        soot.SootFieldRef field = soot.Scene.v().makeFieldRef(assertStatusClass, "class$"+assertStatusClass.getName(), soot.RefType.v("java.lang.Class"));
 
         soot.Local fieldLocal = soot.jimple.Jimple.v().newLocal("$r0", soot.RefType.v("java.lang.Class"));
 
@@ -143,10 +149,10 @@ public class PolyglotMethodSource implements MethodSource {
         ArrayList paramTypes = new ArrayList();
         paramTypes.add(soot.RefType.v("java.lang.String"));
                 
-        soot.SootMethodRef methodToInvoke = soot.Scene.v().makeMethodRef(body.getMethod().getDeclaringClass(), "class$", paramTypes, soot.RefType.v("java.lang.Class"));
+        soot.SootMethodRef methodToInvoke = soot.Scene.v().makeMethodRef(assertStatusClass, "class$", paramTypes, soot.RefType.v("java.lang.Class"));
 
         ArrayList params = new ArrayList();
-        params.add(soot.jimple.StringConstant.v(body.getMethod().getDeclaringClass().getName()));
+        params.add(soot.jimple.StringConstant.v(assertStatusClass.getName()));
         soot.jimple.StaticInvokeExpr invoke = soot.jimple.Jimple.v().newStaticInvokeExpr(methodToInvoke, params);
         //soot.jimple.InvokeStmt invokeStmt = soot.jimple.Jimple.v().newInvokeStmt(invoke);
         soot.jimple.AssignStmt invokeAssign = soot.jimple.Jimple.v().newAssignStmt(invokeLocal, invoke);

@@ -19,8 +19,8 @@ public final class Qctxt_methodBDD extends Qctxt_method {
                                                      new PhysicalDomain[] { V1.v(), T1.v() },
                                                      ("this.add(jedd.internal.Jedd.v().literal(new java.lang.Object" +
                                                       "[...], new jedd.Attribute[...], new jedd.PhysicalDomain[...]" +
-                                                      ")) at /home/olhotak/soot-ref/src/soot/jimple/paddle/queue/Qc" +
-                                                      "txt_methodBDD.jedd:34,8-11"),
+                                                      ")) at /home/olhotak/soot-ref2/src/soot/jimple/paddle/queue/Q" +
+                                                      "ctxt_methodBDD.jedd:34,8-11"),
                                                      jedd.internal.Jedd.v().literal(new Object[] { _ctxt, _method },
                                                                                     new Attribute[] { ctxt.v(), method.v() },
                                                                                     new PhysicalDomain[] { V1.v(), T1.v() })));
@@ -29,10 +29,10 @@ public final class Qctxt_methodBDD extends Qctxt_method {
     public void add(final jedd.internal.RelationContainer in) {
         for (Iterator it = readers.iterator(); it.hasNext(); ) {
             Rctxt_methodBDD reader = (Rctxt_methodBDD) it.next();
-            reader.add(new jedd.internal.RelationContainer(new Attribute[] { ctxt.v(), method.v() },
-                                                           new PhysicalDomain[] { V1.v(), T1.v() },
-                                                           ("reader.add(in) at /home/olhotak/soot-ref/src/soot/jimple/pad" +
-                                                            "dle/queue/Qctxt_methodBDD.jedd:39,12-18"),
+            reader.add(new jedd.internal.RelationContainer(new Attribute[] { method.v(), ctxt.v() },
+                                                           new PhysicalDomain[] { T1.v(), V1.v() },
+                                                           ("reader.add(in) at /home/olhotak/soot-ref2/src/soot/jimple/pa" +
+                                                            "ddle/queue/Qctxt_methodBDD.jedd:39,12-18"),
                                                            in));
         }
     }

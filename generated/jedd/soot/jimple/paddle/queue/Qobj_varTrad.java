@@ -24,7 +24,7 @@ public class Qobj_varTrad extends Qobj_var {
           new jedd.internal.RelationContainer(new Attribute[] { var.v(), obj.v() },
                                               new PhysicalDomain[] { V1.v(), H1.v() },
                                               ("in.iterator(new jedd.Attribute[...]) at /home/olhotak/soot-r" +
-                                               "ef/src/soot/jimple/paddle/queue/Qobj_varTrad.jedd:38,22-24"),
+                                               "ef2/src/soot/jimple/paddle/queue/Qobj_varTrad.jedd:38,22-24"),
                                               in).iterator(new Attribute[] { obj.v(), var.v() });
         while (it.hasNext()) {
             Object[] tuple = (Object[]) it.next();

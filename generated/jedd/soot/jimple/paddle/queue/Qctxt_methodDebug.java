@@ -23,11 +23,11 @@ public class Qctxt_methodDebug extends Qctxt_method {
     
     public void add(final jedd.internal.RelationContainer in) {
         Iterator it =
-          new jedd.internal.RelationContainer(new Attribute[] { ctxt.v(), method.v() },
-                                              new PhysicalDomain[] { V1.v(), T1.v() },
+          new jedd.internal.RelationContainer(new Attribute[] { method.v(), ctxt.v() },
+                                              new PhysicalDomain[] { T1.v(), V1.v() },
                                               ("in.iterator(new jedd.Attribute[...]) at /home/olhotak/soot-r" +
-                                               "ef/src/soot/jimple/paddle/queue/Qctxt_methodDebug.jedd:39,22" +
-                                               "-24"),
+                                               "ef2/src/soot/jimple/paddle/queue/Qctxt_methodDebug.jedd:39,2" +
+                                               "2-24"),
                                               in).iterator(new Attribute[] { ctxt.v(), method.v() });
         while (it.hasNext()) {
             Object[] tuple = (Object[]) it.next();

@@ -36,8 +36,8 @@ public class RobjIter extends Robj {
                                               new PhysicalDomain[] { H1.v() },
                                               ("<soot.jimple.paddle.bdddomains.obj:soot.jimple.paddle.bdddom" +
                                                "ains.H1> ret = jedd.internal.Jedd.v().falseBDD(); at /home/o" +
-                                               "lhotak/soot-ref/src/soot/jimple/paddle/queue/RobjIter.jedd:4" +
-                                               "6,17-20"),
+                                               "lhotak/soot-ref2/src/soot/jimple/paddle/queue/RobjIter.jedd:" +
+                                               "46,17-20"),
                                               jedd.internal.Jedd.v().falseBDD());
         while (r.hasNext()) {
             ret.eqUnion(jedd.internal.Jedd.v().literal(new Object[] { r.next() },
@@ -46,8 +46,8 @@ public class RobjIter extends Robj {
         }
         return new jedd.internal.RelationContainer(new Attribute[] { obj.v() },
                                                    new PhysicalDomain[] { H1.v() },
-                                                   ("return ret; at /home/olhotak/soot-ref/src/soot/jimple/paddle" +
-                                                    "/queue/RobjIter.jedd:50,8-14"),
+                                                   ("return ret; at /home/olhotak/soot-ref2/src/soot/jimple/paddl" +
+                                                    "e/queue/RobjIter.jedd:50,8-14"),
                                                    ret);
     }
     

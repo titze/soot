@@ -39,11 +39,11 @@ public final class Rvar_method_typeMerge extends Rvar_method_type {
     }
     
     public jedd.internal.RelationContainer get() {
-        return new jedd.internal.RelationContainer(new Attribute[] { var.v(), type.v(), method.v() },
-                                                   new PhysicalDomain[] { V1.v(), T2.v(), T1.v() },
+        return new jedd.internal.RelationContainer(new Attribute[] { method.v(), type.v(), var.v() },
+                                                   new PhysicalDomain[] { T1.v(), T2.v(), V1.v() },
                                                    ("return jedd.internal.Jedd.v().union(jedd.internal.Jedd.v().r" +
-                                                    "ead(in1.get()), in2.get()); at /home/olhotak/soot-ref/src/so" +
-                                                    "ot/jimple/paddle/queue/Rvar_method_typeMerge.jedd:52,8-14"),
+                                                    "ead(in1.get()), in2.get()); at /home/olhotak/soot-ref2/src/s" +
+                                                    "oot/jimple/paddle/queue/Rvar_method_typeMerge.jedd:52,8-14"),
                                                    jedd.internal.Jedd.v().union(jedd.internal.Jedd.v().read(in1.get()),
                                                                                 in2.get()));
     }
