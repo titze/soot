@@ -355,6 +355,20 @@ public class InitialResolver {
          */
         private void createClassBody(polyglot.ast.ClassBody classBody){
             
+            TypeListBuilder typeListBuilder = new TypeListBuilder();
+            
+            classBody.visit(typeListBuilder);
+
+            for( Iterator typeIt = typeListBuilder.getList().iterator(); typeIt.hasNext(); ) {
+
+                final polyglot.types.Type type = (polyglot.types.Type) typeIt.next();
+                if (type.isPrimitive()) continue;
+                if (!type.isClass()) continue;
+                polyglot.types.ClassType classType = (polyglot.types.ClassType)type;
+                soot.Type sootClassType = Util.getSootType(classType);
+                references.add(sootClassType);
+            }
+
             // reinit static lists
             staticFieldInits = null;
             fieldInits = null;
