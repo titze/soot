@@ -837,27 +837,38 @@ public class Scene  //extends AbstractHost
         }
 
         // Remove/add all classes from packageInclusionMask as per -i option
-        for( Iterator sIt = Scene.v().getClasses().iterator(); sIt.hasNext(); ) {
-            final SootClass s = (SootClass) sIt.next();
-            if( s.isPhantom() ) continue;
-            if(Options.v().app()) {
-                s.setApplicationClass();
-            }
-            if (Options.v().classes().contains(s.getName())) {
-                s.setApplicationClass();
-                continue;
-            }
-            for( Iterator pkgIt = excludedPackages.iterator(); pkgIt.hasNext(); ) {
-                final String pkg = (String) pkgIt.next();
-                if (s.isApplicationClass()
-                && s.getPackageName().startsWith(pkg)) {
-                        s.setLibraryClass();
-                }
-            }
-            for( Iterator pkgIt = Options.v().include().iterator(); pkgIt.hasNext(); ) {
-                final String pkg = (String) pkgIt.next();
-                if (s.getPackageName().startsWith(pkg))
+        Set processedClasses = new HashSet();
+        while(true) {
+            Set unprocessedClasses = new HashSet(Scene.v().getClasses());
+            unprocessedClasses.removeAll(processedClasses);
+            if( unprocessedClasses.isEmpty() ) break;
+            processedClasses.addAll(unprocessedClasses);
+            for( Iterator sIt = unprocessedClasses.iterator(); sIt.hasNext(); ) {
+                final SootClass s = (SootClass) sIt.next();
+                if( s.isPhantom() ) continue;
+                if(Options.v().app()) {
                     s.setApplicationClass();
+                }
+                if (Options.v().classes().contains(s.getName())) {
+                    s.setApplicationClass();
+                    continue;
+                }
+                for( Iterator pkgIt = excludedPackages.iterator(); pkgIt.hasNext(); ) {
+                    final String pkg = (String) pkgIt.next();
+                    if (s.isApplicationClass()
+                    && s.getPackageName().startsWith(pkg)) {
+                            s.setLibraryClass();
+                    }
+                }
+                for( Iterator pkgIt = Options.v().include().iterator(); pkgIt.hasNext(); ) {
+                    final String pkg = (String) pkgIt.next();
+                    if (s.getPackageName().startsWith(pkg))
+                        s.setApplicationClass();
+                }
+                if(s.isApplicationClass()) {
+                    // make sure we have the support
+                    Scene.v().loadClassAndSupport(s.getName());
+                }
             }
         }
     }
