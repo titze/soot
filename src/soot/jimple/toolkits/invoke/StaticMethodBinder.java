@@ -231,7 +231,7 @@ public class StaticMethodBinder extends SceneTransformer
                         newArgs.addAll(ie.getArgs());
 
                         StaticInvokeExpr sie = Jimple.v().newStaticInvokeExpr
-                            (clonedTarget, newArgs);
+                            (clonedTarget.makeRef(), newArgs);
                         
                         ValueBox ieBox = s.getInvokeExprBox();
                         ieBox.setValue(sie);

@@ -35,6 +35,9 @@ class AbstractSootFieldRef implements SootFieldRef {
         this.declaringClass = declaringClass;
         this.name = name;
         this.type = type;
+        if( declaringClass == null ) throw new RuntimeException( "Attempt to create SootFieldRef with null class" );
+        if( name == null ) throw new RuntimeException( "Attempt to create SootFieldRef with null name" );
+        if( type == null ) throw new RuntimeException( "Attempt to create SootFieldRef with null type" );
     }
 
     private final SootClass declaringClass;
@@ -57,8 +60,8 @@ class AbstractSootFieldRef implements SootFieldRef {
         }
         public String toString() {
             StringBuffer ret = new StringBuffer();
-            resolve(ret);
             ret.append(super.toString());
+            resolve(ret);
             return ret.toString();
         }
     }
@@ -98,6 +101,7 @@ class AbstractSootFieldRef implements SootFieldRef {
                 else break;
             }
         }
-        throw new FieldResolutionFailedException();
+        if( trace == null ) throw new FieldResolutionFailedException();
+        return null;
     }
 }

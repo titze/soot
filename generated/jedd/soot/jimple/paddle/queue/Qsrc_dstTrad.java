@@ -23,8 +23,8 @@ public class Qsrc_dstTrad extends Qsrc_dst {
         Iterator it =
           new jedd.internal.RelationContainer(new Attribute[] { dst.v(), src.v() },
                                               new PhysicalDomain[] { V2.v(), V1.v() },
-                                              ("in.iterator(new jedd.Attribute[...]) at /home/olhotak/soot-t" +
-                                               "runk/src/soot/jimple/paddle/queue/Qsrc_dstTrad.jedd:38,22-24"),
+                                              ("in.iterator(new jedd.Attribute[...]) at /home/olhotak/soot-r" +
+                                               "ef/src/soot/jimple/paddle/queue/Qsrc_dstTrad.jedd:38,22-24"),
                                               in).iterator(new Attribute[] { src.v(), dst.v() });
         while (it.hasNext()) {
             Object[] tuple = (Object[]) it.next();

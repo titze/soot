@@ -22,16 +22,16 @@ public class BDDObjSensStaticContextManager extends AbsStaticContextManager {
                                                "t = jedd.internal.Jedd.v().copy(jedd.internal.Jedd.v().proje" +
                                                "ct(in.get(), new jedd.PhysicalDomain[...]), new jedd.Physica" +
                                                "lDomain[...], new jedd.PhysicalDomain[...]); at /home/olhota" +
-                                               "k/soot-trunk/src/soot/jimple/paddle/BDDObjSensStaticContextM" +
-                                               "anager.jedd:35,45-51"),
+                                               "k/soot-ref/src/soot/jimple/paddle/BDDObjSensStaticContextMan" +
+                                               "ager.jedd:35,45-51"),
                                               jedd.internal.Jedd.v().copy(jedd.internal.Jedd.v().project(in.get(),
                                                                                                          new jedd.PhysicalDomain[] { V2.v() }),
                                                                           new jedd.PhysicalDomain[] { V1.v() },
                                                                           new jedd.PhysicalDomain[] { V2.v() }));
-        out.add(new jedd.internal.RelationContainer(new jedd.Attribute[] { srcm.v(), kind.v(), stmt.v(), srcc.v(), tgtm.v(), tgtc.v() },
-                                                    new jedd.PhysicalDomain[] { T1.v(), FD.v(), ST.v(), V1.v(), T2.v(), V2.v() },
-                                                    ("out.add(newOut) at /home/olhotak/soot-trunk/src/soot/jimple/" +
-                                                     "paddle/BDDObjSensStaticContextManager.jedd:37,8-11"),
+        out.add(new jedd.internal.RelationContainer(new jedd.Attribute[] { srcc.v(), tgtc.v(), srcm.v(), tgtm.v(), kind.v(), stmt.v() },
+                                                    new jedd.PhysicalDomain[] { V1.v(), V2.v(), T1.v(), T2.v(), FD.v(), ST.v() },
+                                                    ("out.add(newOut) at /home/olhotak/soot-ref/src/soot/jimple/pa" +
+                                                     "ddle/BDDObjSensStaticContextManager.jedd:37,8-11"),
                                                     newOut));
         return !jedd.internal.Jedd.v().equals(jedd.internal.Jedd.v().read(newOut), jedd.internal.Jedd.v().falseBDD());
     }

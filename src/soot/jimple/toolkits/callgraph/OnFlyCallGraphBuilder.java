@@ -193,7 +193,7 @@ public final class OnFlyCallGraphBuilder
                     InstanceInvokeExpr iie = (InstanceInvokeExpr) ie;
                     Local receiver = (Local) iie.getBase();
                     NumberedString subSig = 
-                        iie.getMethod().getNumberedSubSignature();
+                        iie.getMethodRef().getSubSignature();
                     addVirtualCallSite( s, m, receiver, iie, subSig,
                             Edge.ieToKind(iie) );
                     if( subSig == sigStart ) {
@@ -258,13 +258,13 @@ public final class OnFlyCallGraphBuilder
                     } 
                 }
                 if( ie instanceof StaticInvokeExpr ) {
-                    SootClass cl = ie.getMethod().getDeclaringClass();
+                    SootClass cl = ie.getMethodRef().declaringClass();
                     for( Iterator clinitIt = EntryPoints.v().clinitsOf(cl).iterator(); clinitIt.hasNext(); ) {
                         final SootMethod clinit = (SootMethod) clinitIt.next();
                         addEdge( source, s, clinit, Kind.CLINIT );
                     }
                 }
-                if( ie.getMethod().getNumberedSubSignature() == sigForName ) {
+                if( ie.getMethodRef().getSubSignature() == sigForName ) {
                     Value className = ie.getArg(0);
                     if( className instanceof StringConstant ) {
                         String cls = ((StringConstant) className ).value;
@@ -291,7 +291,7 @@ public final class OnFlyCallGraphBuilder
             if( s.containsFieldRef() ) {
                 FieldRef fr = (FieldRef) s.getFieldRef();
                 if( fr instanceof StaticFieldRef ) {
-                    SootClass cl = fr.getField().getDeclaringClass();
+                    SootClass cl = fr.getFieldRef().declaringClass();
                     for( Iterator clinitIt = EntryPoints.v().clinitsOf(cl).iterator(); clinitIt.hasNext(); ) {
                         final SootMethod clinit = (SootMethod) clinitIt.next();
                         addEdge( source, s, clinit, Kind.CLINIT );

@@ -165,45 +165,14 @@ public class SootClass extends AbstractHost implements Numberable
         Returns the field of this class with the given name and type. 
     */
 
-    private SootField findFieldInClass( String name, Type type ) {
+    public SootField getField( String name, Type type ) {
         for( Iterator fieldIt = this.getFields().iterator(); fieldIt.hasNext(); ) {
             final SootField field = (SootField) fieldIt.next();
             if(field.name.equals(name) && field.type.equals(type))
                 return field;
         }
-        return null;
+        throw new RuntimeException("No field " + name + " in class " + getName());
     }
-    /**
-        Returns the field of this class with the given name and type. 
-    */
-
-    public SootField getField(String name, Type type) 
-    {
-        SootField ret = null;
-        ret = findFieldInClass( name, type );
-        if( ret != null ) return ret;
-
-        if(Scene.v().allowsPhantomRefs() && this.isPhantom())
-        {
-            SootField f = new SootField(name, type);
-            f.setPhantom(true);
-            addField(f);
-            return f;
-        } else {
-            LinkedList queue = new LinkedList();
-            queue.addAll( this.getInterfaces() );
-            while( !queue.isEmpty() ) {
-                SootClass iface = (SootClass) queue.removeFirst();
-                ret = iface.findFieldInClass( name, type );
-                if( ret != null ) return ret;
-                queue.addAll( iface.getInterfaces() );
-            }
-            if( this.hasSuperclass() ) 
-                return this.getSuperclass().getField( name, type );
-            throw new RuntimeException("No field " + name + " in class " + getName());
-        }
-    }
-
     
     /**
         Returns the field of this class with the given name.  Throws a RuntimeException if there
@@ -376,7 +345,7 @@ public class SootClass extends AbstractHost implements Numberable
         return ret;
     }
 
-    private SootMethod findMethodInClass( String name, List parameterTypes,
+    public SootMethod getMethod( String name, List parameterTypes,
             Type returnType )
     {
         for( Iterator methodIt = methodIterator(); methodIt.hasNext(); ) {
@@ -388,47 +357,13 @@ public class SootClass extends AbstractHost implements Numberable
                 return method;
             }
         }
-        return null;
+        throw new RuntimeException(
+                "Class "+getName()+" doesn't have method "+
+            name + "(" + parameterTypes + ")" + " : " + returnType );
     }
     /**
         Attempts to retrieve the method with the given name, parameters and return type.  
     */
-
-    public SootMethod getMethod(String name, List parameterTypes, Type returnType) 
-    {
-        SootMethod ret = null;
-        SootClass cl = this;
-        while(true) {
-            ret = cl.findMethodInClass( name, parameterTypes, returnType );
-            if( ret != null ) return ret;
-            if(Scene.v().allowsPhantomRefs() && cl.isPhantom())
-            {
-                SootMethod m = new SootMethod(name, parameterTypes, returnType);
-                m.setPhantom(true);
-                cl.addMethod(m);
-                return m;
-            }
-            if( cl.hasSuperclass() ) cl = cl.getSuperclass();
-            else break;
-        }
-        cl = this;
-        while(true) {
-            LinkedList queue = new LinkedList();
-            queue.addAll( cl.getInterfaces() );
-            while( !queue.isEmpty() ) {
-                SootClass iface = (SootClass) queue.removeFirst();
-                ret = iface.findMethodInClass( name, parameterTypes, returnType );
-                if( ret != null ) return ret;
-                queue.addAll( iface.getInterfaces() );
-            }
-            if( cl.hasSuperclass() ) cl = cl.getSuperclass();
-            else break;
-        }
-        throw new RuntimeException(
-                "Class "+getName()+" doesn't have method "+
-            name + "(" + parameterTypes + ")" + " : " + returnType +
-            "; failed to resolve in superclasses and interfaces" );
-    }
 
     /**
         Attempts to retrieve the method with the given name and parameters.  This method
@@ -462,7 +397,7 @@ public class SootClass extends AbstractHost implements Numberable
         if(found)
             return foundMethod;
         else
-            throw new RuntimeException("couldn't find method");
+            throw new RuntimeException("couldn't find method "+name+"("+parameterTypes+") in "+this);
     }
 
     
@@ -497,7 +432,7 @@ public class SootClass extends AbstractHost implements Numberable
         if(found)
             return foundMethod;
         else
-            throw new RuntimeException("couldn't find method");
+            throw new RuntimeException("couldn't find method "+name+"(*) in "+this);
     }
 
     /**

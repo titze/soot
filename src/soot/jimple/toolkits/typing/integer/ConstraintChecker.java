@@ -80,7 +80,7 @@ class ConstraintChecker extends AbstractStmtSwitch
     if(ie instanceof InterfaceInvokeExpr)
       {
 	InterfaceInvokeExpr invoke = (InterfaceInvokeExpr) ie;
-	SootMethod method = invoke.getMethod();
+	SootMethodRef method = invoke.getMethodRef();
 	int count = invoke.getArgCount();
 	
 	for(int i = 0; i < count; i++)
@@ -92,11 +92,11 @@ class ConstraintChecker extends AbstractStmtSwitch
 		if(local.getType() instanceof IntegerType)
 		  {
 		    if(!ClassHierarchy.v().typeNode(local.getType()).
-		       hasAncestor_1(ClassHierarchy.v().typeNode(method.getParameterType(i))))
+		       hasAncestor_1(ClassHierarchy.v().typeNode(method.parameterType(i))))
 		      {
 			if(fix)
 			  {
-			    invoke.setArg(i, insertCast(local, method.getParameterType(i), invokestmt));
+			    invoke.setArg(i, insertCast(local, method.parameterType(i), invokestmt));
 			  }
 			else
 			  {
@@ -110,7 +110,7 @@ class ConstraintChecker extends AbstractStmtSwitch
     else if(ie instanceof SpecialInvokeExpr)
       {
 	SpecialInvokeExpr invoke = (SpecialInvokeExpr) ie;
-	SootMethod method = invoke.getMethod();
+	SootMethodRef method = invoke.getMethodRef();
 	int count = invoke.getArgCount();
 	
 	for(int i = 0; i < count; i++)
@@ -122,11 +122,11 @@ class ConstraintChecker extends AbstractStmtSwitch
 		if(local.getType() instanceof IntegerType)
 		  {
 		    if(!ClassHierarchy.v().typeNode(local.getType()).
-		       hasAncestor_1(ClassHierarchy.v().typeNode(method.getParameterType(i))))
+		       hasAncestor_1(ClassHierarchy.v().typeNode(method.parameterType(i))))
 		      {
 			if(fix)
 			  {
-			    invoke.setArg(i, insertCast(local, method.getParameterType(i), invokestmt));
+			    invoke.setArg(i, insertCast(local, method.parameterType(i), invokestmt));
 			  }
 			else
 			  {
@@ -140,7 +140,7 @@ class ConstraintChecker extends AbstractStmtSwitch
     else if(ie instanceof VirtualInvokeExpr)
       {
 	VirtualInvokeExpr invoke = (VirtualInvokeExpr) ie;
-	SootMethod method = invoke.getMethod();
+	SootMethodRef method = invoke.getMethodRef();
 	int count = invoke.getArgCount();
 	
 	for(int i = 0; i < count; i++)
@@ -152,11 +152,11 @@ class ConstraintChecker extends AbstractStmtSwitch
 		if(local.getType() instanceof IntegerType)
 		  {
 		    if(!ClassHierarchy.v().typeNode(local.getType()).
-		       hasAncestor_1(ClassHierarchy.v().typeNode(method.getParameterType(i))))
+		       hasAncestor_1(ClassHierarchy.v().typeNode(method.parameterType(i))))
 		      {
 			if(fix)
 			  {
-			    invoke.setArg(i, insertCast(local, method.getParameterType(i), invokestmt));
+			    invoke.setArg(i, insertCast(local, method.parameterType(i), invokestmt));
 			  }
 			else
 			  {
@@ -170,7 +170,7 @@ class ConstraintChecker extends AbstractStmtSwitch
     else if(ie instanceof StaticInvokeExpr)
       {
 	StaticInvokeExpr invoke = (StaticInvokeExpr) ie;
-	SootMethod method = invoke.getMethod();
+	SootMethodRef method = invoke.getMethodRef();
 	int count = invoke.getArgCount();
 	
 	for(int i = 0; i < count; i++)
@@ -182,11 +182,11 @@ class ConstraintChecker extends AbstractStmtSwitch
 		if(local.getType() instanceof IntegerType)
 		  {
 		    if(!ClassHierarchy.v().typeNode(local.getType()).
-		       hasAncestor_1(ClassHierarchy.v().typeNode(method.getParameterType(i))))
+		       hasAncestor_1(ClassHierarchy.v().typeNode(method.parameterType(i))))
 		      {
 			if(fix)
 			  {
-			    invoke.setArg(i, insertCast(local, method.getParameterType(i), invokestmt));
+			    invoke.setArg(i, insertCast(local, method.parameterType(i), invokestmt));
 			  }
 			else
 			  {
@@ -706,9 +706,9 @@ class ConstraintChecker extends AbstractStmtSwitch
 
 	handleInvokeExpr(ie, stmt);
 	
-	if(ie.getMethod().getReturnType() instanceof IntegerType)
+	if(ie.getMethodRef().returnType() instanceof IntegerType)
 	  {
-	    right = ClassHierarchy.v().typeNode(ie.getMethod().getReturnType());
+	    right = ClassHierarchy.v().typeNode(ie.getMethodRef().returnType());
 	  }
       }
     else if(r instanceof NewArrayExpr)

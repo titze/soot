@@ -93,7 +93,7 @@ public class SynchronizerManager
         jb.getLocals().add(l);
         Chain units = jb.getUnits();
         units.insertBefore(Jimple.v().newAssignStmt(l, 
-                                  Jimple.v().newStaticFieldRef(classCacher)), 
+                                  Jimple.v().newStaticFieldRef(classCacher.makeRef())), 
                            target);
 
         IfStmt ifStmt;
@@ -102,11 +102,11 @@ public class SynchronizerManager
                             target), target);
 
         units.insertBefore(Jimple.v().newAssignStmt
-            (l, Jimple.v().newStaticInvokeExpr(getClassFetcherFor(sc),
+            (l, Jimple.v().newStaticInvokeExpr(getClassFetcherFor(sc).makeRef(),
             Arrays.asList(new Value[] {StringConstant.v(sc.getName())}))),
                            target);
         units.insertBefore(Jimple.v().newAssignStmt
-                           (Jimple.v().newStaticFieldRef(classCacher),
+                           (Jimple.v().newStaticFieldRef(classCacher.makeRef()),
                             l), target);
 
         ifStmt.setTarget(target);
@@ -273,7 +273,7 @@ public class SynchronizerManager
                     Jimple.v().newStaticInvokeExpr(
                           Scene.v().getMethod(
                                "<java.lang.Class: java.lang.Class"+
-                               " forName(java.lang.String)>"), 
+                               " forName(java.lang.String)>").makeRef(), 
                           Arrays.asList(new Value[] {l_r0}))));
 
             // insert "return $r2;"
@@ -295,7 +295,7 @@ public class SynchronizerManager
             // add "$r5 = virtualinvoke r1.<java.lang.Throwable: java.lang.String getMessage()>();"
                 units.add(Jimple.v().newAssignStmt(l_r5,
                     Jimple.v().newVirtualInvokeExpr(l_r1,
-                          Scene.v().getMethod("<java.lang.Throwable: java.lang.String getMessage()>"),
+                          Scene.v().getMethod("<java.lang.Throwable: java.lang.String getMessage()>").makeRef(),
                           new LinkedList())));
 
             // add .specialinvoke $r4.<java.lang.NoClassDefFoundError: .void <init>(java.lang.String)>($r5);
@@ -303,7 +303,7 @@ public class SynchronizerManager
                      Jimple.v().newSpecialInvokeExpr(l_r4,
                           Scene.v().getMethod(
                                "<java.lang.NoClassDefFoundError: void"+
-                               " <init>(java.lang.String)>"), 
+                               " <init>(java.lang.String)>").makeRef(), 
                           Arrays.asList(new Value[] {l_r5}))));
 
             // add .throw $r4;

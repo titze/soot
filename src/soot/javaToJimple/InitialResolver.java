@@ -1127,10 +1127,13 @@ public class InitialResolver {
                 accessMeth.setSource(pmams);
             }
             else {
-                PrivateFieldAccMethodSource pfams = new PrivateFieldAccMethodSource();
-                pfams.fieldName(((polyglot.types.FieldInstance)inst).name());
-                pfams.fieldType(Util.getSootType(((polyglot.types.FieldInstance)inst).type()));
-                pfams.classToInvoke(((soot.RefType)Util.getSootType(((polyglot.types.FieldInstance)inst).container())).getSootClass());
+                PrivateFieldAccMethodSource pfams = new PrivateFieldAccMethodSource(
+                        
+                    Util.getSootType(((polyglot.types.FieldInstance)inst).type()),
+                    ((polyglot.types.FieldInstance)inst).name(),
+                    ((polyglot.types.FieldInstance)inst).flags().isStatic(),
+                    ((soot.RefType)Util.getSootType(((polyglot.types.FieldInstance)inst).container())).getSootClass()
+                    );
                 accessMeth.setSource(pfams);
             }
 
