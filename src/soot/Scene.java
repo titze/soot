@@ -205,8 +205,8 @@ public class Scene  //extends AbstractHost
     {
         RefType type = (RefType) nameToClass.get(className);
         if( type == null ) return false;
+        if( !type.hasSootClass() ) return false;
         SootClass c = type.getSootClass();
-        if( c == null ) return false;
         return c.isInScene();
     }
 

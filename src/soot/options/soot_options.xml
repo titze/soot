@@ -216,6 +216,14 @@ Print various debugging information as Soot runs, particularly
 from the Baf Body Phase and the Jimple Annotation Pack Phase.
 </long_desc>
                 </boolopt>
+                <boolopt>
+			<name>Debug Resolver</name>
+			<alias>debug-resolver</alias>
+			<short_desc>Print debugging info from SootResolver</short_desc>
+			<long_desc>
+Print debugging information about class resolving.
+</long_desc>
+                </boolopt>
 	</section>
 	<section>
 		<name>Input Options</name>

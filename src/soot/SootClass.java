@@ -38,6 +38,7 @@ import soot.jimple.toolkits.base.*;
 import soot.dava.*;
 import soot.dava.toolkits.base.misc.*;
 import soot.jimple.*;
+import soot.options.*;
 
 /*
  * Incomplete and inefficient implementation.
@@ -84,6 +85,7 @@ public class SootClass extends AbstractHost implements Numberable
         this.modifiers = modifiers;
         refType = RefType.v(name);
         refType.setSootClass(this);
+        if(Options.v().debug_resolver()) System.out.println("created "+name);
     }
 
     /**

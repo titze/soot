@@ -149,6 +149,11 @@ public class Options extends OptionsBase {
             )
                 debug = true;
   
+            else if( false 
+            || option.equals( "debug-resolver" )
+            )
+                debug_resolver = true;
+  
             else if( false
             || option.equals( "cp" )
             || option.equals( "soot-class-path" )
@@ -840,6 +845,10 @@ public class Options extends OptionsBase {
     private boolean debug = false;
     public void set_debug( boolean setting ) { debug = setting; }
   
+    public boolean debug_resolver() { return debug_resolver; }
+    private boolean debug_resolver = false;
+    public void set_debug_resolver( boolean setting ) { debug_resolver = setting; }
+  
     public String soot_classpath() { return soot_classpath; }
     public void set_soot_classpath( String setting ) { soot_classpath = setting; }
     private String soot_classpath = "";
@@ -1004,6 +1013,7 @@ public class Options extends OptionsBase {
 +padOpt(" -w -whole-program", "Run in whole-program mode" )
 +padOpt(" -ws -whole-shimple", "Run in whole-shimple mode" )
 +padOpt(" -debug", "Print various Soot debugging info" )
++padOpt(" -debug-resolver", "Print debugging info from SootResolver" )
 +"\nInput Options:\n"
       
 +padOpt(" -cp PATH -soot-class-path PATH -soot-classpath PATH", "Use PATH as the classpath for finding classes." )

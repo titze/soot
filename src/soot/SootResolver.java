@@ -104,6 +104,7 @@ public class SootResolver
         while( !toResolveWorklist.isEmpty() ) {
             SootClass sc = (SootClass) toResolveWorklist.removeFirst();
             if( resolvedClasses.contains(sc) ) continue;
+            if(Options.v().debug_resolver()) System.out.println("resolving "+sc);
             resolvedClasses.add(sc);
             String className = sc.getName();
             ClassSource is = SourceLocator.v().getClassSource(className);
@@ -138,6 +139,7 @@ public class SootResolver
 
     private void addReferencesOfClass(SootClass sc) {
         Collection references = (Collection) classToReferences.get(sc);
+        if(Options.v().debug_resolver()) System.out.println("resolving refs of "+sc);
         if( references == null ) return;
 
         Iterator it = references.iterator();
