@@ -61,53 +61,7 @@ public class Util
         useFaithfulNaming = v;
     }    
 
-    public void assertResolvedClass(String className)
-    {
-        if(!Scene.v().containsClass(className))
-        {
-            SootClass newClass = new SootClass(className);
-            Scene.v().addClass(newClass);
-            
-            markedClasses.add(newClass);
-            classesToResolve.addLast(newClass);
-        }
-    }
-
-    public void assertResolvedClassForType(Type type)
-    {
-        if(type instanceof RefType)
-            assertResolvedClass(((RefType) type).getClassName());
-        else if(type instanceof ArrayType)
-            assertResolvedClassForType(((ArrayType) type).baseType);
-    }
-    
-    public SootClass getResolvedClass(String className)
-    {
-        if(Scene.v().containsClass(className))
-            return Scene.v().getSootClass(className);
-            
-        SootClass newClass = new SootClass(className);
-        Scene.v().addClass(newClass);
-        
-        markedClasses.add(newClass);
-        classesToResolve.addLast(newClass);
-           
-        return newClass;
-    }
-
-    public SootClass getResolvedClass2(String className)
-    {
-        if(Scene.v().containsClass(className))
-            return Scene.v().getSootClass(className);
-            
-        SootClass newClass = new SootClass(className);
-        Scene.v().addClass(newClass);
-        
-        return newClass;
-    }
-
-    
-    public void resolveFromClassFile(SootClass aClass, InputStream is)
+    public void resolveFromClassFile(SootClass aClass, InputStream is, List references)
     {
         SootClass bclass = aClass;                
         String className = bclass.getName();
@@ -157,7 +111,8 @@ public class Util
                     String superName = ((CONSTANT_Utf8_info) (coffiClass.constant_pool[c.name_index])).convert();
                     superName = superName.replace('/', '.');
     
-                    bclass.setSuperclass(SootResolver.v().getResolvedClass(superName));
+                    references.add(superName);
+                    bclass.setSuperclass(SootResolver.v().makeClassRef(superName));
                 }
         }
     
@@ -173,7 +128,8 @@ public class Util
     
                     interfaceName = interfaceName.replace('/', '.');
     
-                    SootClass interfaceClass = SootResolver.v().getResolvedClass(interfaceName);
+                    references.add(interfaceName);
+                    SootClass interfaceClass = SootResolver.v().makeClassRef(interfaceName);
                     bclass.addInterface(interfaceClass);
                 }
         }
@@ -195,7 +151,7 @@ public class Util
                 SootField field = new SootField(fieldName, fieldType, modifiers);
                 bclass.addField(field);
                     
-                SootResolver.v().assertResolvedClassForType(fieldType,false);
+                references.add(fieldType);
     
                 // add initialization constant, if any
 		for(int j = 0; j < fieldInfo.attributes_count; j++) {
@@ -252,6 +208,7 @@ public class Util
                 String methodName = ((CONSTANT_Utf8_info)
                                      (coffiClass.constant_pool[methodInfo.name_index])).convert();
 		
+
                 String methodDescriptor = ((CONSTANT_Utf8_info)
                                            (coffiClass.constant_pool[methodInfo.descriptor_index])).convert();
     
@@ -266,12 +223,12 @@ public class Util
     
                     for(int j = 0; j < types.length - 1; j++)
                         {
-                            SootResolver.v().assertResolvedClassForType(types[j],false);
+                            references.add(types[j]);
                             parameterTypes.add(types[j]);
                         }
                         
                     returnType = types[types.length - 1];
-                    SootResolver.v().assertResolvedClassForType(returnType,false);
+                    references.add(returnType);
                 }
     
                 int modifiers = methodInfo.access_flags;
@@ -301,7 +258,8 @@ public class Util
     
                                         exceptionName = exceptionName.replace('/', '.');
     
-                                        method.addExceptionIfAbsent(SootResolver.v().getResolvedClass(exceptionName));
+                                        references.add(exceptionName);
+                                        method.addExceptionIfAbsent(SootResolver.v().makeClassRef(exceptionName));
                                     }
                             }
                 }
@@ -317,9 +275,9 @@ public class Util
                                 String name = desc.replace('/', '.');
 
                                 if(name.startsWith("["))
-                                    SootResolver.v().assertResolvedClassForType(jimpleTypeOfFieldDescriptor(desc),false);
+                                    references.add(jimpleTypeOfFieldDescriptor(desc));
                                 else
-                                    SootResolver.v().assertResolvedClass(name,false);
+                                    references.add(name);
                             }
                 }
             }

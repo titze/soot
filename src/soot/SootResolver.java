@@ -1,5 +1,6 @@
 /* Soot - a J*va Optimization Framework
  * Copyright (C) 2000 Patrice Pominville
+ * Copyright (C) 2004 Ondrej Lhotak, Ganesh Sittampalam
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -38,119 +39,132 @@ import soot.javaToJimple.*;
 /** Loads symbols for SootClasses from either class files or jimple files. */
 public class SootResolver 
 {
-    public SootResolver (Singletons.Global g) {
-	for(int i=0;i<=maxresolvinglevel;i++) classesToResolve[i]=new LinkedList();
-        if( Options.v().whole_program() || Options.v().full_resolver() ) {
-            G.v().out.println("If this was actually implemented, Soot would be using the FULL resolver now.");
-        } else {
-            G.v().out.println("If this was actually implemented, Soot would be using the FAST resolver now.");
-        }
-    }
+    public SootResolver (Singletons.Global g) {}
 
     public static SootResolver v() { return G.v().soot_SootResolver();}
     
-    private Set markedClasses = new HashSet();
-    private int resolvinglevel=0;
-    private final static int maxresolvinglevel=1;
-    private LinkedList[] classesToResolve = new LinkedList[maxresolvinglevel+1];
-    private boolean mIsResolving = false;
-    private InitialResolver initSourceResolver;
-
-    public InitialResolver getInitSourceResolver(){
-        if (initSourceResolver == null) {
-            initSourceResolver = InitialResolver.v();
-        }
-        return initSourceResolver;
+    /** Returns true if we are resolving all class refs recursively. */
+    private boolean resolveEverything() {
+        return( Options.v().whole_program() || Options.v().full_resolver() );
     }
 
-    /** Creates a new SootResolver. */
-    //public SootResolver()
-    //{
-    //}
+    /** Maps each resolved class to a list of all references in it. */
+    private Map classToReferences = new HashMap();
+    
+    /** Set of classes that have been resolved. */
+    private Set resolvedClasses = new HashSet();
 
-    /** Returns a SootClass object for the given className. 
-     * Creates a new context class if needed. */
-    public SootClass getResolvedClass(String className)
+    /** SootClasses waiting to be resolved. */
+    private LinkedList/*SootClass*/ toResolveWorklist = new LinkedList();
+
+    /** Returns a (possibly not yet resolved) SootClass to be used in references
+     * to a class. If/when the class is resolved, it will be resolved into this
+     * SootClass.
+     * */
+    public SootClass makeClassRef(String className)
     {
         if(Scene.v().containsClass(className))
             return Scene.v().getSootClass(className);
 
         SootClass newClass;
-        if(mIsResolving) {
-            newClass = new SootClass(className);
-            Scene.v().addClass(newClass);
-        
-            markedClasses.add(newClass);
-            classesToResolve[resolvinglevel].addLast(newClass);
-        } else {
-            newClass = resolveClassAndSupportClasses(className);
-        }
-        
+        newClass = new SootClass(className);
+        Scene.v().addClass(newClass);
+
         return newClass;
     }
 
 
-    /** Resolves the given className and all dependent classes. */
-    public SootClass resolveClassAndSupportClasses(String className)
-    {
-        mIsResolving = true;
-	if(resolvinglevel!=0) throw new RuntimeException("resolving level wasn't 0");
-        SootClass resolvedClass = getResolvedClass(className);
-       
-	for(;resolvinglevel<=maxresolvinglevel;resolvinglevel++)
-	    while(!classesToResolve[resolvinglevel].isEmpty()) {
-            
-		ClassSource is;
-
-		SootClass sc = (SootClass) classesToResolve[resolvinglevel].removeFirst();
-		className = sc.getName();
-           
-		is = SourceLocator.v().getClassSource(className);
-
-		//		System.out.println("Resolving "+resolvinglevel+" "+className);
-
-		if( is == null ) {
-		    if(!Scene.v().allowsPhantomRefs()) {
-			throw new RuntimeException("couldn't find type: " +
-						   className + " (is your soot-class-path set properly?)");
-		    } else {
-			G.v().out.println("Warning: " + className +
-					  " is a phantom class!");
-			sc.setPhantomClass();
-			continue;
-		    }
-		}
-                
-		is.resolve( sc );
-	    }        
-	resolvinglevel=0;
-        mIsResolving = false;
+    /**
+     * Resolves the given class. Depending on the resolver settings, may
+     * decide to resolve other classes as well. If the class has already
+     * been resolved, just returns the class that was already resolved.
+     * */
+    public SootClass resolveClass(String className) {
+        SootClass resolvedClass = makeClassRef(className);
+        addToResolveWorklist(resolvedClass);
+        processResolveWorklist();
         return resolvedClass;
     }
 
-    /** Asserts that type is resolved. */
-    public void assertResolvedClassForType(Type type,boolean samelevel)
-    {
-        if(type instanceof RefType)
-            assertResolvedClass(((RefType) type).getClassName(),samelevel);
-        else if(type instanceof ArrayType)
-            assertResolvedClassForType(((ArrayType) type).baseType,samelevel);
+    /**
+     * Resolves the given class and any classes referenced by it.
+     * Depending on the resolver settings, may decide to resolve other
+     * classes as well. If the class has already been resolved, just
+     * returns the class that was already resolved.
+     * */
+    public SootClass resolveClassAndSupportClasses(String className) {
+        SootClass resolvedClass = resolveClass(className);
+        addReferencesOfClass(resolvedClass);
+        processResolveWorklist();
+        return resolvedClass;
     }
 
-    /** Asserts that class is resolved. */
-    public void assertResolvedClass(String className,boolean samelevel)
-    {
-        if(!Scene.v().containsClass(className))
-	    if(samelevel || resolvinglevel<maxresolvinglevel) {
-		SootClass newClass = new SootClass(className);
-		Scene.v().addClass(newClass);
-		
-		markedClasses.add(newClass);
-		classesToResolve[samelevel ? resolvinglevel : resolvinglevel+1]
-		    .addLast(newClass);
-		
-	    } // else System.out.println("Not resolving "+className);
+    /** Resolve all classes on toResolveWorklist. */
+    private void processResolveWorklist() {
+        while( !toResolveWorklist.isEmpty() ) {
+            SootClass sc = (SootClass) toResolveWorklist.removeFirst();
+            if( resolvedClasses.contains(sc) ) continue;
+        System.out.println( "resolving "+sc );
+            resolvedClasses.add(sc);
+            String className = sc.getName();
+            ClassSource is = SourceLocator.v().getClassSource(className);
+            if( is == null ) {
+                if(!Scene.v().allowsPhantomRefs()) {
+                    throw new RuntimeException("couldn't find class: " +
+                        className + " (is your soot-class-path set properly?)");
+                } else {
+                    G.v().out.println(
+                            "Warning: " + className + " is a phantom class!");
+                    sc.setPhantomClass();
+                    classToReferences.put( sc, new ArrayList() );
+                }
+            } else {
+                List references = is.resolve(sc);
+                classToReferences.put( sc, references );
+            }
 
+            if( resolveEverything() ) {
+                addReferencesOfClass(sc);
+            }
+
+            // We always resolve the superclass and the outer class
+            if(sc.hasSuperclass()) addToResolveWorklist(sc.getSuperclass());
+            if(sc.hasOuterClass()) addToResolveWorklist(sc.getOuterClass());
+            for( Iterator ifaceIt = sc.getInterfaces().iterator(); ifaceIt.hasNext(); ) {
+                final SootClass iface = (SootClass) ifaceIt.next();
+                addToResolveWorklist(iface);
+            }
+        }
+    }
+
+    private void addReferencesOfClass(SootClass sc) {
+        Collection references = new HashSet((List) classToReferences.get(sc));
+        System.out.println( "resolving refs in "+sc+":"+references );
+        if( references == null ) return;
+
+        Iterator it = references.iterator();
+        while( it.hasNext() ) {
+            final Object o = it.next();
+
+            if( o instanceof String ) {
+                addToResolveWorklist((String) o);
+            } else if( o instanceof Type ) {
+                addToResolveWorklist((Type) o);
+            } else throw new RuntimeException(o.toString());
+        }
+    }
+       
+    private void addToResolveWorklist(Type type) {
+        if( type instanceof RefType )
+            addToResolveWorklist(((RefType) type).getClassName());
+        else if( type instanceof ArrayType )
+            addToResolveWorklist(((ArrayType) type).baseType);
+    }
+    private void addToResolveWorklist(String className) {
+        addToResolveWorklist(makeClassRef(className));
+    }
+    private void addToResolveWorklist(SootClass sc) {
+        if( !resolvedClasses.contains(sc) ) toResolveWorklist.add(sc);
     }
 }
 
