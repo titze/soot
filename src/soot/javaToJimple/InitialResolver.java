@@ -131,9 +131,9 @@ public class InitialResolver {
         
         // resolve Object, StringBuffer(used for string concat) and Throwable
         // (used for finally)
-        SootResolver.v().assertResolvedClass("java.lang.Object");
-        SootResolver.v().assertResolvedClass("java.lang.StringBuffer");
-        SootResolver.v().assertResolvedClass("java.lang.Throwable");
+        SootResolver.v().assertResolvedClass("java.lang.Object",true);
+        SootResolver.v().assertResolvedClass("java.lang.StringBuffer",true);
+        SootResolver.v().assertResolvedClass("java.lang.Throwable",true);
         
     }
 
@@ -166,7 +166,7 @@ public class InitialResolver {
             classTypesFound = new ArrayList();
         }
         classTypesFound.add(classType);
-        SootResolver.v().assertResolvedClassForType(sootClassType);
+        SootResolver.v().assertResolvedClassForType(sootClassType,true);
     }
 
     private ArrayList classTypesFound;
@@ -299,7 +299,7 @@ public class InitialResolver {
                 
                 specialClassName = sootClass.getName()+"$"+getNextAnonNum();    
                 addNameToAST(specialClassName);
-                soot.SootResolver.v().assertResolvedClass(specialClassName);    
+                soot.SootResolver.v().assertResolvedClass(specialClassName,false);    
                 // add meth to newly created class not this current one
                 soot.SootClass specialClass = soot.Scene.v().getSootClass(specialClassName);
                 if (specialAnonMap == null){
@@ -384,7 +384,7 @@ public class InitialResolver {
             anonClassMap.put(finder.newFound(), realName);
             anonTypeMap.put(new polyglot.util.IdentityKey(type), realName);
             addNameToAST(realName);
-            soot.SootResolver.v().assertResolvedClass(realName);
+            soot.SootResolver.v().assertResolvedClass(realName,true);
             
         }
     }
@@ -432,7 +432,7 @@ public class InitialResolver {
             localClassMap.put(finder.declFound(), realName);
             localTypeMap.put(new polyglot.util.IdentityKey(type), realName);
             addNameToAST(realName);
-            soot.SootResolver.v().assertResolvedClass(realName);
+            soot.SootResolver.v().assertResolvedClass(realName,true);
         }
     }
 

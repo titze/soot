@@ -17,6 +17,9 @@ public class ExceptionChecker extends BodyTransformer{
     }
     
     protected void internalTransform(Body b, String phaseName, Map options){
+
+	Scene.v().loadClassAndSupport("java.lang.RuntimeException");	
+	Scene.v().loadClassAndSupport("java.lang.Error");
         
         Iterator it = b.getUnits().iterator();
         while (it.hasNext()){

@@ -49,7 +49,7 @@ public class JimpleClassSource extends ClassSource
         Iterator it = jimpAST.getCstPool().iterator();                
         while(it.hasNext()) {
             String nclass = (String) it.next();
-            SootResolver.v().assertResolvedClass(nclass);
+            SootResolver.v().assertResolvedClass(nclass,true);
         }
 
         try {

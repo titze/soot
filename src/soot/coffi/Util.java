@@ -195,7 +195,7 @@ public class Util
                 SootField field = new SootField(fieldName, fieldType, modifiers);
                 bclass.addField(field);
                     
-                SootResolver.v().assertResolvedClassForType(fieldType);
+                SootResolver.v().assertResolvedClassForType(fieldType,false);
     
                 // add initialization constant, if any
 		for(int j = 0; j < fieldInfo.attributes_count; j++) {
@@ -266,12 +266,12 @@ public class Util
     
                     for(int j = 0; j < types.length - 1; j++)
                         {
-                            SootResolver.v().assertResolvedClassForType(types[j]);
+                            SootResolver.v().assertResolvedClassForType(types[j],false);
                             parameterTypes.add(types[j]);
                         }
                         
                     returnType = types[types.length - 1];
-                    SootResolver.v().assertResolvedClassForType(returnType);
+                    SootResolver.v().assertResolvedClassForType(returnType,false);
                 }
     
                 int modifiers = methodInfo.access_flags;
@@ -317,9 +317,9 @@ public class Util
                                 String name = desc.replace('/', '.');
 
                                 if(name.startsWith("["))
-                                    SootResolver.v().assertResolvedClassForType(jimpleTypeOfFieldDescriptor(desc));
+                                    SootResolver.v().assertResolvedClassForType(jimpleTypeOfFieldDescriptor(desc),false);
                                 else
-                                    SootResolver.v().assertResolvedClass(name);
+                                    SootResolver.v().assertResolvedClass(name,false);
                             }
                 }
             }

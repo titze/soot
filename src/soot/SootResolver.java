@@ -38,12 +38,16 @@ import soot.javaToJimple.*;
 /** Loads symbols for SootClasses from either class files or jimple files. */
 public class SootResolver 
 {
-    public SootResolver (Singletons.Global g) {}
+    public SootResolver (Singletons.Global g) {
+	for(int i=0;i<=maxresolvinglevel;i++) classesToResolve[i]=new LinkedList();
+    }
 
     public static SootResolver v() { return G.v().soot_SootResolver();}
     
     private Set markedClasses = new HashSet();
-    private LinkedList classesToResolve = new LinkedList();
+    private int resolvinglevel=0;
+    private final static int maxresolvinglevel=1;
+    private LinkedList[] classesToResolve = new LinkedList[maxresolvinglevel+1];
     private boolean mIsResolving = false;
     private InitialResolver initSourceResolver;
 
@@ -53,6 +57,7 @@ public class SootResolver
         }
         return initSourceResolver;
     }
+
     /** Creates a new SootResolver. */
     //public SootResolver()
     //{
@@ -71,7 +76,7 @@ public class SootResolver
             Scene.v().addClass(newClass);
         
             markedClasses.add(newClass);
-            classesToResolve.addLast(newClass);
+            classesToResolve[resolvinglevel].addLast(newClass);
         } else {
             newClass = resolveClassAndSupportClasses(className);
         }
@@ -80,60 +85,67 @@ public class SootResolver
     }
 
 
-
     /** Resolves the given className and all dependent classes. */
     public SootClass resolveClassAndSupportClasses(String className)
     {
         mIsResolving = true;
+	if(resolvinglevel!=0) throw new RuntimeException("resolving level wasn't 0");
         SootClass resolvedClass = getResolvedClass(className);
        
-        while(!classesToResolve.isEmpty()) {
+	for(;resolvinglevel<=maxresolvinglevel;resolvinglevel++)
+	    while(!classesToResolve[resolvinglevel].isEmpty()) {
             
-            ClassSource is;
+		ClassSource is;
 
-            SootClass sc = (SootClass) classesToResolve.removeFirst();
-            className = sc.getName();
+		SootClass sc = (SootClass) classesToResolve[resolvinglevel].removeFirst();
+		className = sc.getName();
            
-            is = SourceLocator.v().getClassSource(className);
-            if( is == null ) {
-                if(!Scene.v().allowsPhantomRefs()) {
-                    throw new RuntimeException("couldn't find type: " +
-                        className + " (is your soot-class-path set properly?)");
-                } else {
-                    G.v().out.println("Warning: " + className +
-                            " is a phantom class!");
-                    sc.setPhantomClass();
-                    continue;
-                }
-            }
+		is = SourceLocator.v().getClassSource(className);
+
+		//		System.out.println("Resolving "+resolvinglevel+" "+className);
+
+		if( is == null ) {
+		    if(!Scene.v().allowsPhantomRefs()) {
+			throw new RuntimeException("couldn't find type: " +
+						   className + " (is your soot-class-path set properly?)");
+		    } else {
+			G.v().out.println("Warning: " + className +
+					  " is a phantom class!");
+			sc.setPhantomClass();
+			continue;
+		    }
+		}
                 
-            is.resolve( sc );
-        }        
-        
+		is.resolve( sc );
+	    }        
+	resolvinglevel=0;
         mIsResolving = false;
         return resolvedClass;
     }
 
     /** Asserts that type is resolved. */
-    public void assertResolvedClassForType(Type type)
+    public void assertResolvedClassForType(Type type,boolean samelevel)
     {
         if(type instanceof RefType)
-            assertResolvedClass(((RefType) type).getClassName());
+            assertResolvedClass(((RefType) type).getClassName(),samelevel);
         else if(type instanceof ArrayType)
-            assertResolvedClassForType(((ArrayType) type).baseType);
+            assertResolvedClassForType(((ArrayType) type).baseType,samelevel);
     }
-    
+
     /** Asserts that class is resolved. */
-    public void assertResolvedClass(String className)
+    public void assertResolvedClass(String className,boolean samelevel)
     {
         if(!Scene.v().containsClass(className))
-        {
-            SootClass newClass = new SootClass(className);
-            Scene.v().addClass(newClass);
-            
-            markedClasses.add(newClass);
-            classesToResolve.addLast(newClass);
-        }
+	    if(samelevel || resolvinglevel<maxresolvinglevel) {
+		SootClass newClass = new SootClass(className);
+		Scene.v().addClass(newClass);
+		
+		markedClasses.add(newClass);
+		classesToResolve[samelevel ? resolvinglevel : resolvinglevel+1]
+		    .addLast(newClass);
+		
+	    } // else System.out.println("Not resolving "+className);
+
     }
 }
 
