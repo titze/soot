@@ -266,7 +266,7 @@ public class Util
                     
                 // Go through the constant pool, forcing all mentioned classes to be resolved. 
                 {
-                    for(int k = 0; k < coffiClass.constant_pool_count; k++)
+                    for(int k = 0; k < coffiClass.constant_pool_count; k++) {
                         if(coffiClass.constant_pool[k] instanceof CONSTANT_Class_info)
                             {
                                 CONSTANT_Class_info c = (CONSTANT_Class_info) coffiClass.constant_pool[k];
@@ -279,6 +279,17 @@ public class Util
                                 else
                                     references.add(name);
                             }
+                        if(coffiClass.constant_pool[k] instanceof CONSTANT_Fieldref_info
+                        || coffiClass.constant_pool[k] instanceof CONSTANT_Methodref_info
+                        || coffiClass.constant_pool[k] instanceof CONSTANT_InterfaceMethodref_info) {
+                            Type[] types = jimpleTypesOfFieldOrMethodDescriptor(
+                                cp_info.getTypeDescr(coffiClass.constant_pool,k));
+                            for( int ii = 0; ii < types.length; ii++ ) {
+                                references.add(types[ii]);
+                            }
+                        }
+
+                    }
                 }
             }
 
