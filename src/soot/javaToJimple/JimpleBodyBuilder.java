@@ -3346,7 +3346,6 @@ public class JimpleBodyBuilder {
             }
         }
         soot.RefType sootType = (soot.RefType)Util.getSootType(objType);
-	soot.Scene.v().loadClassAndSupport(sootType.getClassName());
         soot.Local retLocal = lg.generateLocal(sootType);
         soot.jimple.NewExpr sootNew = soot.jimple.Jimple.v().newNewExpr(sootType);
 
@@ -3449,7 +3448,6 @@ public class JimpleBodyBuilder {
         soot.Type sootRecType = Util.getSootType(receiver.type());
         soot.SootClass receiverTypeClass = soot.Scene.v().loadClassAndSupport("java.lang.Object");
         if (sootRecType instanceof soot.RefType){
-	    soot.Scene.v().loadClassAndSupport(((soot.RefType) sootRecType).getClassName());
              receiverTypeClass = ((soot.RefType)sootRecType).getSootClass();
         }
         

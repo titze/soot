@@ -79,7 +79,6 @@ class TypeNode
     this(id, (Type) type, hierarchy);
 	
     {    
-	Scene.v().loadClassAndSupport(type.getClassName());
       SootClass sClass = type.getSootClass();
       List plist = new LinkedList();
       
