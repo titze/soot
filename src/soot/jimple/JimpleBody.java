@@ -100,17 +100,9 @@ public class JimpleBody extends StmtBody
                     Main.assignTimer.start();
 
                 TypeAssigner.v().transform(this, "jb.tr");
-
-                if(typingFailed())
-                {
-                    patchForTyping();
-                    
-                    TypeAssigner.v().transform(this, "jb.trp");
-                    
-                    if(typingFailed())
-                        throw new RuntimeException("type inference failed!");
-                        
-                }
+		
+		if(typingFailed())
+		  throw new RuntimeException("type inference failed!");
             }
         }
         
@@ -268,7 +260,7 @@ public class JimpleBody extends StmtBody
                   if(l.getType().equals(UnknownType.v()) ||
                     l.getType().equals(ErroneousType.v()))
                 {
-                    return true;
+		  return true;
                 }
             }
         }
