@@ -125,7 +125,9 @@ public abstract class ForwardFlowAnalysis extends FlowAnalysis
                         {
                             Object otherBranchFlow = unitToAfterFlow.get(predIt.
 next());
-                            merge(beforeFlow, otherBranchFlow, beforeFlow);
+                            Object newBeforeFlow = newInitialFlow();
+                            merge(beforeFlow, otherBranchFlow, newBeforeFlow);
+                            copy(newBeforeFlow, beforeFlow);
                         }
                     }
                 }
@@ -134,6 +136,7 @@ next());
                 {
                     afterFlow = unitToAfterFlow.get(s);
                     if (Options.v().interactive_mode()){
+                        
                         Object savedInfo = newInitialFlow();
                         if (filterUnitToBeforeFlow != null){
                             //System.out.println("unit: "+s);
@@ -153,6 +156,9 @@ next());
                         }
                         //System.out.println("saved info: "+savedInfo);
                         FlowInfo fi = new FlowInfo(savedInfo, s, true);
+                        if (InteractionHandler.v().getStopUnitList() != null && InteractionHandler.v().getStopUnitList().contains(s)){
+                            InteractionHandler.v().handleStopAtNodeEvent(s);
+                        }
                         InteractionHandler.v().handleBeforeAnalysisEvent(fi);
                     }
                     flowThrough(beforeFlow, s, afterFlow);
