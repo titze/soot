@@ -45,6 +45,7 @@ import soot.jimple.toolkits.annotation.nullcheck.*;
 import soot.jimple.toolkits.annotation.tags.*;
 import soot.jimple.toolkits.annotation.defs.*;
 import soot.jimple.toolkits.annotation.liveness.*;
+import soot.jimple.toolkits.annotation.*;
 import soot.jimple.toolkits.pointer.*;
 import soot.jimple.toolkits.callgraph.*;
 import soot.tagkit.*;
@@ -198,10 +199,10 @@ public class PackManager {
         }
 
         // CFG Viewer 
-        addPack(p = new BodyPack("cfg"));
+        /*addPack(p = new BodyPack("cfg"));
         {
             p.add(new Transform("cfg.output", CFGPrinter.v()));
-        }
+        }*/
         
         // Grimp body creation
         addPack(p = new BodyPack("gb"));
@@ -284,6 +285,11 @@ public class PackManager {
     }
 
     public void runPacks() {
+        if (Options.v().src_prec() == Options.src_prec_class && Options.v().keep_line_number()){
+            LineNumberAdder lineNumAdder = LineNumberAdder.v();
+            lineNumAdder.internalTransform("", null);
+        }
+        
         if (Options.v().whole_program() || Options.v().whole_shimple()) {
             runWholeProgramPacks();
         }
