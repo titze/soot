@@ -16,8 +16,8 @@ public class BDDContextCallGraphBuilder extends AbsContextCallGraphBuilder {
                                           new jedd.PhysicalDomain[] { V1.v(), T1.v() },
                                           ("private <soot.jimple.paddle.bdddomains.ctxt, soot.jimple.pad" +
                                            "dle.bdddomains.method> m2c = jedd.internal.Jedd.v().falseBDD" +
-                                           "() at /home/olhotak/soot-ref2/src/soot/jimple/paddle/BDDCont" +
-                                           "extCallGraphBuilder.jedd:36,12-26"),
+                                           "() at /home/olhotak/soot-ref/src/soot/jimple/paddle/BDDConte" +
+                                           "xtCallGraphBuilder.jedd:36,12-26"),
                                           jedd.internal.Jedd.v().falseBDD());
     
     public boolean update() {
@@ -31,8 +31,8 @@ public class BDDContextCallGraphBuilder extends AbsContextCallGraphBuilder {
                                                "nd:soot.jimple.paddle.bdddomains.FD, soot.jimple.paddle.bddd" +
                                                "omains.tgtc:soot.jimple.paddle.bdddomains.V2, soot.jimple.pa" +
                                                "ddle.bdddomains.tgtm:soot.jimple.paddle.bdddomains.T2> newEd" +
-                                               "ges = edgesIn.get(); at /home/olhotak/soot-ref2/src/soot/jim" +
-                                               "ple/paddle/BDDContextCallGraphBuilder.jedd:38,45-53"),
+                                               "ges = edgesIn.get(); at /home/olhotak/soot-ref/src/soot/jimp" +
+                                               "le/paddle/BDDContextCallGraphBuilder.jedd:38,45-53"),
                                               edgesIn.get());
         final jedd.internal.RelationContainer newOut =
           new jedd.internal.RelationContainer(new jedd.Attribute[] { srcc.v(), srcm.v(), stmt.v(), kind.v(), tgtc.v(), tgtm.v() },
@@ -47,8 +47,8 @@ public class BDDContextCallGraphBuilder extends AbsContextCallGraphBuilder {
                                                "t = jedd.internal.Jedd.v().join(jedd.internal.Jedd.v().read(" +
                                                "jedd.internal.Jedd.v().project(newEdges, new jedd.PhysicalDo" +
                                                "main[...])), m2c, new jedd.PhysicalDomain[...]); at /home/ol" +
-                                               "hotak/soot-ref2/src/soot/jimple/paddle/BDDContextCallGraphBu" +
-                                               "ilder.jedd:39,45-51"),
+                                               "hotak/soot-ref/src/soot/jimple/paddle/BDDContextCallGraphBui" +
+                                               "lder.jedd:39,45-51"),
                                               jedd.internal.Jedd.v().join(jedd.internal.Jedd.v().read(jedd.internal.Jedd.v().project(newEdges,
                                                                                                                                      new jedd.PhysicalDomain[] { V1.v() })),
                                                                           m2c,
@@ -59,15 +59,15 @@ public class BDDContextCallGraphBuilder extends AbsContextCallGraphBuilder {
                                               ("<soot.jimple.paddle.bdddomains.ctxt:soot.jimple.paddle.bdddo" +
                                                "mains.V1, soot.jimple.paddle.bdddomains.method:soot.jimple.p" +
                                                "addle.bdddomains.T1> methods = methodsIn.get(); at /home/olh" +
-                                               "otak/soot-ref2/src/soot/jimple/paddle/BDDContextCallGraphBui" +
-                                               "lder.jedd:42,23-30"),
+                                               "otak/soot-ref/src/soot/jimple/paddle/BDDContextCallGraphBuil" +
+                                               "der.jedd:42,23-30"),
                                               methodsIn.get());
         Rsrcc_srcm_stmt_kind_tgtc_tgtm edges =
           cicg.edgesOutOf(new Rctxt_methodBDD(new jedd.internal.RelationContainer(new jedd.Attribute[] { method.v(), ctxt.v() },
                                                                                   new jedd.PhysicalDomain[] { T1.v(), V1.v() },
                                                                                   ("new soot.jimple.paddle.queue.Rctxt_methodBDD(...) at /home/o" +
-                                                                                   "lhotak/soot-ref2/src/soot/jimple/paddle/BDDContextCallGraphB" +
-                                                                                   "uilder.jedd:45,12-15"),
+                                                                                   "lhotak/soot-ref/src/soot/jimple/paddle/BDDContextCallGraphBu" +
+                                                                                   "ilder.jedd:45,12-15"),
                                                                                   jedd.internal.Jedd.v().join(jedd.internal.Jedd.v().read(jedd.internal.Jedd.v().project(methods,
                                                                                                                                                                          new jedd.PhysicalDomain[] { V1.v() })),
                                                                                                               jedd.internal.Jedd.v().literal(new Object[] { null },
@@ -79,10 +79,10 @@ public class BDDContextCallGraphBuilder extends AbsContextCallGraphBuilder {
                                                                                                               new jedd.PhysicalDomain[] { V1.v() })),
                                                    methods,
                                                    new jedd.PhysicalDomain[] { T1.v() }));
-        out.add(new jedd.internal.RelationContainer(new jedd.Attribute[] { tgtm.v(), kind.v(), srcm.v(), tgtc.v(), stmt.v(), srcc.v() },
-                                                    new jedd.PhysicalDomain[] { T2.v(), FD.v(), T1.v(), V2.v(), ST.v(), V1.v() },
-                                                    ("out.add(newOut) at /home/olhotak/soot-ref2/src/soot/jimple/p" +
-                                                     "addle/BDDContextCallGraphBuilder.jedd:49,8-11"),
+        out.add(new jedd.internal.RelationContainer(new jedd.Attribute[] { srcc.v(), stmt.v(), srcm.v(), tgtm.v(), tgtc.v(), kind.v() },
+                                                    new jedd.PhysicalDomain[] { V1.v(), ST.v(), T1.v(), T2.v(), V2.v(), FD.v() },
+                                                    ("out.add(newOut) at /home/olhotak/soot-ref/src/soot/jimple/pa" +
+                                                     "ddle/BDDContextCallGraphBuilder.jedd:49,8-11"),
                                                     newOut));
         m2c.eqUnion(methods);
         return !jedd.internal.Jedd.v().equals(jedd.internal.Jedd.v().read(newOut), jedd.internal.Jedd.v().falseBDD());

@@ -17,8 +17,8 @@ public final class Rvar_method_typeBDD extends Rvar_method_type {
                                            "e.bdddomains.V1, soot.jimple.paddle.bdddomains.method:soot.j" +
                                            "imple.paddle.bdddomains.T1, soot.jimple.paddle.bdddomains.ty" +
                                            "pe:soot.jimple.paddle.bdddomains.T2> bdd at /home/olhotak/so" +
-                                           "ot-ref2/src/soot/jimple/paddle/queue/Rvar_method_typeBDD.jed" +
-                                           "d:31,12-40"));
+                                           "ot-ref/src/soot/jimple/paddle/queue/Rvar_method_typeBDD.jedd" +
+                                           ":31,12-40"));
     
     void add(final jedd.internal.RelationContainer tuple) { bdd.eqUnion(tuple); }
     
@@ -26,8 +26,8 @@ public final class Rvar_method_typeBDD extends Rvar_method_type {
         this(name);
         this.add(new jedd.internal.RelationContainer(new Attribute[] { method.v(), type.v(), var.v() },
                                                      new PhysicalDomain[] { T1.v(), T2.v(), V1.v() },
-                                                     ("this.add(bdd) at /home/olhotak/soot-ref2/src/soot/jimple/pad" +
-                                                      "dle/queue/Rvar_method_typeBDD.jedd:33,94-97"),
+                                                     ("this.add(bdd) at /home/olhotak/soot-ref/src/soot/jimple/padd" +
+                                                      "le/queue/Rvar_method_typeBDD.jedd:33,94-97"),
                                                      bdd));
     }
     
@@ -54,8 +54,8 @@ public final class Rvar_method_typeBDD extends Rvar_method_type {
                       new jedd.internal.RelationContainer(new Attribute[] { method.v(), type.v(), var.v() },
                                                           new PhysicalDomain[] { T1.v(), T2.v(), V1.v() },
                                                           ("bdd.iterator(new jedd.Attribute[...]) at /home/olhotak/soot-" +
-                                                           "ref2/src/soot/jimple/paddle/queue/Rvar_method_typeBDD.jedd:4" +
-                                                           "5,25-28"),
+                                                           "ref/src/soot/jimple/paddle/queue/Rvar_method_typeBDD.jedd:45" +
+                                                           ",25-28"),
                                                           bdd).iterator(new Attribute[] { var.v(), method.v(), type.v() });
                     bdd.eq(jedd.internal.Jedd.v().falseBDD());
                 }
@@ -75,14 +75,14 @@ public final class Rvar_method_typeBDD extends Rvar_method_type {
                                                "ains.V1, soot.jimple.paddle.bdddomains.method:soot.jimple.pa" +
                                                "ddle.bdddomains.T1, soot.jimple.paddle.bdddomains.type:soot." +
                                                "jimple.paddle.bdddomains.T2> ret = bdd; at /home/olhotak/soo" +
-                                               "t-ref2/src/soot/jimple/paddle/queue/Rvar_method_typeBDD.jedd" +
-                                               ":55,37-40"),
+                                               "t-ref/src/soot/jimple/paddle/queue/Rvar_method_typeBDD.jedd:" +
+                                               "55,37-40"),
                                               bdd);
         bdd.eq(jedd.internal.Jedd.v().falseBDD());
         return new jedd.internal.RelationContainer(new Attribute[] { method.v(), type.v(), var.v() },
                                                    new PhysicalDomain[] { T1.v(), T2.v(), V1.v() },
-                                                   ("return ret; at /home/olhotak/soot-ref2/src/soot/jimple/paddl" +
-                                                    "e/queue/Rvar_method_typeBDD.jedd:57,8-14"),
+                                                   ("return ret; at /home/olhotak/soot-ref/src/soot/jimple/paddle" +
+                                                    "/queue/Rvar_method_typeBDD.jedd:57,8-14"),
                                                    ret);
     }
     

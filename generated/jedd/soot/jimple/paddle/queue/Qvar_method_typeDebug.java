@@ -26,8 +26,8 @@ public class Qvar_method_typeDebug extends Qvar_method_type {
           new jedd.internal.RelationContainer(new Attribute[] { method.v(), type.v(), var.v() },
                                               new PhysicalDomain[] { T1.v(), T2.v(), V1.v() },
                                               ("in.iterator(new jedd.Attribute[...]) at /home/olhotak/soot-r" +
-                                               "ef2/src/soot/jimple/paddle/queue/Qvar_method_typeDebug.jedd:" +
-                                               "39,22-24"),
+                                               "ef/src/soot/jimple/paddle/queue/Qvar_method_typeDebug.jedd:3" +
+                                               "9,22-24"),
                                               in).iterator(new Attribute[] { var.v(), method.v(), type.v() });
         while (it.hasNext()) {
             Object[] tuple = (Object[]) it.next();

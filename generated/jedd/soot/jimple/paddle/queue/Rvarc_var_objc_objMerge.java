@@ -39,11 +39,11 @@ public final class Rvarc_var_objc_objMerge extends Rvarc_var_objc_obj {
     }
     
     public jedd.internal.RelationContainer get() {
-        return new jedd.internal.RelationContainer(new Attribute[] { objc.v(), var.v(), varc.v(), obj.v() },
-                                                   new PhysicalDomain[] { C2.v(), V1.v(), C1.v(), H1.v() },
+        return new jedd.internal.RelationContainer(new Attribute[] { varc.v(), obj.v(), objc.v(), var.v() },
+                                                   new PhysicalDomain[] { C1.v(), H1.v(), C2.v(), V1.v() },
                                                    ("return jedd.internal.Jedd.v().union(jedd.internal.Jedd.v().r" +
-                                                    "ead(in1.get()), in2.get()); at /home/olhotak/soot-ref2/src/s" +
-                                                    "oot/jimple/paddle/queue/Rvarc_var_objc_objMerge.jedd:52,8-14"),
+                                                    "ead(in1.get()), in2.get()); at /home/olhotak/soot-ref/src/so" +
+                                                    "ot/jimple/paddle/queue/Rvarc_var_objc_objMerge.jedd:52,8-14"),
                                                    jedd.internal.Jedd.v().union(jedd.internal.Jedd.v().read(in1.get()),
                                                                                 in2.get()));
     }

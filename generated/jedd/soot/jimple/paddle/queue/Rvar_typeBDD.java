@@ -15,8 +15,8 @@ public final class Rvar_typeBDD extends Rvar_type {
                                           new PhysicalDomain[] { V1.v(), T2.v() },
                                           ("private <soot.jimple.paddle.bdddomains.var:soot.jimple.paddl" +
                                            "e.bdddomains.V1, soot.jimple.paddle.bdddomains.type:soot.jim" +
-                                           "ple.paddle.bdddomains.T2> bdd at /home/olhotak/soot-ref2/src" +
-                                           "/soot/jimple/paddle/queue/Rvar_typeBDD.jedd:31,12-29"));
+                                           "ple.paddle.bdddomains.T2> bdd at /home/olhotak/soot-ref/src/" +
+                                           "soot/jimple/paddle/queue/Rvar_typeBDD.jedd:31,12-29"));
     
     void add(final jedd.internal.RelationContainer tuple) { bdd.eqUnion(tuple); }
     
@@ -24,8 +24,8 @@ public final class Rvar_typeBDD extends Rvar_type {
         this(name);
         this.add(new jedd.internal.RelationContainer(new Attribute[] { type.v(), var.v() },
                                                      new PhysicalDomain[] { T2.v(), V1.v() },
-                                                     ("this.add(bdd) at /home/olhotak/soot-ref2/src/soot/jimple/pad" +
-                                                      "dle/queue/Rvar_typeBDD.jedd:33,76-79"),
+                                                     ("this.add(bdd) at /home/olhotak/soot-ref/src/soot/jimple/padd" +
+                                                      "le/queue/Rvar_typeBDD.jedd:33,76-79"),
                                                      bdd));
     }
     
@@ -52,7 +52,7 @@ public final class Rvar_typeBDD extends Rvar_type {
                       new jedd.internal.RelationContainer(new Attribute[] { type.v(), var.v() },
                                                           new PhysicalDomain[] { T2.v(), V1.v() },
                                                           ("bdd.iterator(new jedd.Attribute[...]) at /home/olhotak/soot-" +
-                                                           "ref2/src/soot/jimple/paddle/queue/Rvar_typeBDD.jedd:45,25-28"),
+                                                           "ref/src/soot/jimple/paddle/queue/Rvar_typeBDD.jedd:45,25-28"),
                                                           bdd).iterator(new Attribute[] { var.v(), type.v() });
                     bdd.eq(jedd.internal.Jedd.v().falseBDD());
                 }
@@ -70,14 +70,14 @@ public final class Rvar_typeBDD extends Rvar_type {
                                               new PhysicalDomain[] { V1.v(), T2.v() },
                                               ("<soot.jimple.paddle.bdddomains.var:soot.jimple.paddle.bdddom" +
                                                "ains.V1, soot.jimple.paddle.bdddomains.type:soot.jimple.padd" +
-                                               "le.bdddomains.T2> ret = bdd; at /home/olhotak/soot-ref2/src/" +
-                                               "soot/jimple/paddle/queue/Rvar_typeBDD.jedd:55,26-29"),
+                                               "le.bdddomains.T2> ret = bdd; at /home/olhotak/soot-ref/src/s" +
+                                               "oot/jimple/paddle/queue/Rvar_typeBDD.jedd:55,26-29"),
                                               bdd);
         bdd.eq(jedd.internal.Jedd.v().falseBDD());
         return new jedd.internal.RelationContainer(new Attribute[] { type.v(), var.v() },
                                                    new PhysicalDomain[] { T2.v(), V1.v() },
-                                                   ("return ret; at /home/olhotak/soot-ref2/src/soot/jimple/paddl" +
-                                                    "e/queue/Rvar_typeBDD.jedd:57,8-14"),
+                                                   ("return ret; at /home/olhotak/soot-ref/src/soot/jimple/paddle" +
+                                                    "/queue/Rvar_typeBDD.jedd:57,8-14"),
                                                    ret);
     }
     

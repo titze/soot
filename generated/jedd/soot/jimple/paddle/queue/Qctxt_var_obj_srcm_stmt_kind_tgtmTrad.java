@@ -32,11 +32,11 @@ public class Qctxt_var_obj_srcm_stmt_kind_tgtmTrad extends Qctxt_var_obj_srcm_st
     
     public void add(final jedd.internal.RelationContainer in) {
         Iterator it =
-          new jedd.internal.RelationContainer(new Attribute[] { tgtm.v(), var.v(), kind.v(), srcm.v(), stmt.v(), obj.v(), ctxt.v() },
-                                              new PhysicalDomain[] { T2.v(), V1.v(), FD.v(), T1.v(), ST.v(), H1.v(), V2.v() },
+          new jedd.internal.RelationContainer(new Attribute[] { ctxt.v(), stmt.v(), srcm.v(), tgtm.v(), obj.v(), var.v(), kind.v() },
+                                              new PhysicalDomain[] { V2.v(), ST.v(), T1.v(), T2.v(), H1.v(), V1.v(), FD.v() },
                                               ("in.iterator(new jedd.Attribute[...]) at /home/olhotak/soot-r" +
-                                               "ef2/src/soot/jimple/paddle/queue/Qctxt_var_obj_srcm_stmt_kin" +
-                                               "d_tgtmTrad.jedd:43,22-24"),
+                                               "ef/src/soot/jimple/paddle/queue/Qctxt_var_obj_srcm_stmt_kind" +
+                                               "_tgtmTrad.jedd:43,22-24"),
                                               in).iterator(new Attribute[] { ctxt.v(), var.v(), obj.v(), srcm.v(), stmt.v(), kind.v(), tgtm.v() });
         while (it.hasNext()) {
             Object[] tuple = (Object[]) it.next();

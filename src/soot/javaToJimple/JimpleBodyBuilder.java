@@ -554,8 +554,7 @@ public class JimpleBodyBuilder {
             createLocalClassDecl((polyglot.ast.LocalClassDecl)stmt);
         }
         else {
-            System.out.println("Unhandled Stmt: "+stmt.getClass().toString());
-            throw new RuntimeException("Unhandled Stmt");
+            throw new RuntimeException("Unhandled Stmt: "+stmt.getClass());
         }
     }
     
@@ -1628,8 +1627,7 @@ public class JimpleBodyBuilder {
             return getFieldLocal((polyglot.ast.Field)expr);
         }
         else {
-            System.out.println("Expr: "+expr);
-            throw new RuntimeException("Unhandled Expression: ");
+            throw new RuntimeException("Unhandled Expression: "+expr);
         }
        
     }
