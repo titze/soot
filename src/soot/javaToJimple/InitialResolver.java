@@ -296,6 +296,7 @@ public class InitialResolver {
             }
             
             currentClassDeclPos = cDecl.position();
+            findReferences(cDecl);
             createClassBody(cDecl.body());
         
             // handle initialization of fields 
@@ -350,14 +351,10 @@ public class InitialResolver {
             Util.addLineTag(sootClass, cDecl);
         }
 
-        /**
-         * Class Body Creation
-         */
-        private void createClassBody(polyglot.ast.ClassBody classBody){
-            
+        private void findReferences(polyglot.ast.Node node) {
             TypeListBuilder typeListBuilder = new TypeListBuilder();
             
-            classBody.visit(typeListBuilder);
+            node.visit(typeListBuilder);
 
             for( Iterator typeIt = typeListBuilder.getList().iterator(); typeIt.hasNext(); ) {
 
@@ -368,6 +365,13 @@ public class InitialResolver {
                 soot.Type sootClassType = Util.getSootType(classType);
                 references.add(sootClassType);
             }
+        }
+
+        /**
+         * Class Body Creation
+         */
+        private void createClassBody(polyglot.ast.ClassBody classBody){
+            
 
             // reinit static lists
             staticFieldInits = null;
@@ -864,6 +868,7 @@ public class InitialResolver {
                         
                         polyglot.ast.New aNew = (polyglot.ast.New)anonClassMap.getKey(simpleName);
                         createAnonClassDecl(aNew);
+                        findReferences(aNew.body());
                         createClassBody(aNew.body());
                         handleFieldInits();
         
