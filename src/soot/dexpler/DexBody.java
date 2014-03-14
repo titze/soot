@@ -201,10 +201,14 @@ public class DexBody  {
 
         for (DebugItem di: code.getDebugItems()) {
             if (di instanceof ImmutableLineNumber) {
-                ImmutableLineNumber ln = (ImmutableLineNumber)di;
-                instructionAtAddress(ln.getCodeAddress()).setLineNumber(ln.getLineNumber());
-                Debug.printDbg("Add line number tag " + ln.getLineNumber() + " for instruction: "
-                        + instructionAtAddress(ln.getCodeAddress()));
+            	ImmutableLineNumber ln = (ImmutableLineNumber)di;
+            	try {
+            		instructionAtAddress(ln.getCodeAddress()).setLineNumber(ln.getLineNumber());
+            		Debug.printDbg("Add line number tag " + ln.getLineNumber() + " for instruction: "
+            				+ instructionAtAddress(ln.getCodeAddress()));
+            	} catch (Exception e) {
+            		System.err.println("Ignoring Exception in Debug Items!");
+            	}
             }
         }
 
