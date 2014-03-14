@@ -54,7 +54,14 @@ public class ArrayNumberer<E extends Numberable> implements IterableNumberer<E> 
 	public E get( long number ) {
         if( number == 0 ) return null;
         E ret = (E) numberToObj[(int) number];
-        if( ret == null ) throw new RuntimeException( "no object with number "+number );
+        //if( ret == null ) throw new RuntimeException( "no object with number "+number );
+        if( ret == null ) {
+        	try {
+        		throw new RuntimeException( "no object with number "+number );
+        	} catch (Exception e) {
+        		e.printStackTrace();
+        	}
+        }
         return ret;
     }
 
