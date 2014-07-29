@@ -117,6 +117,9 @@ public abstract class DexTransformer extends BodyTransformer {
 			Body body) {
 		List<Unit> defs = new LinkedList<Unit>();
 		for (Unit u : body.getUnits()) {
+        	if (Thread.interrupted()){ 
+        		throw new RuntimeException("Interrupting");
+        	}
 			List<Unit> defsOf = localDefs.getDefsOfAt(l, u);
 			if (defsOf != null)
 				defs.addAll(defsOf);
