@@ -51,6 +51,7 @@ public final class HybridPointsToSet extends PointsToSetInternal {
         TypeManager typeManager = pag.getTypeManager();
         if( other.bits != null ) {
         	boolean error = false;
+        	BitVector mask = null;
         	if( !typeManager.castNeverFails( other.getType(), this.getType() ) ) {
         		try {
         			mask = typeManager.get( this.getType() );
@@ -67,7 +68,6 @@ public final class HybridPointsToSet extends PointsToSetInternal {
                 exclude.convertToBits();
             }
             
-            BitVector mask = null;
             if( !typeManager.castNeverFails( other.getType(), this.getType() ) ) {
                 mask = typeManager.get( this.getType() );
             }
