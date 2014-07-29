@@ -33,7 +33,6 @@ import soot.RefType;
 import soot.SootMethod;
 import soot.Type;
 import soot.Unit;
-import soot.VoidType;
 import soot.util.Chain;
 
 /** Implementation of the Body class for the Jimple IR. */
@@ -95,6 +94,7 @@ public class JimpleBody extends StmtBody
 		for(Local l: localChain) {
 			Type t = l.getType();
 			if(!t.isAllowedInFinalCode()) {
+				System.out.println("(" + this.getMethod()+ ") local type not allowed in final code: " + t +" local: "+l +" body: \n"+ this);
 				throw new RuntimeException("(" + this.getMethod()+ ") local type not allowed in final code: " + t +" local: "+l +" body: \n"+ this);
 			}
 		}

@@ -108,6 +108,10 @@ public class AntTask extends MatchingTask {
 
 
 
+        public void setcoffi(boolean arg) {
+            if(arg) addArg("-coffi");
+        }
+  
         public void sethelp(boolean arg) {
             if(arg) addArg("-help");
         }
@@ -390,6 +394,21 @@ public class AntTask extends MatchingTask {
             }
         }
   
+        public void setcheck_init_throw_analysis(String arg) {
+            if(false
+    
+                || arg.equals( "auto" )
+                || arg.equals( "pedantic" )
+                || arg.equals( "unit" )
+                || arg.equals( "dalvik" )
+                ) {
+                addArg("-check-init-throw-analysis");
+                addArg(arg);
+            } else {
+                throw new BuildException("Bad value "+arg+" for option check_init_throw_analysis");
+            }
+        }
+  
         public void setomit_excepting_unit_edges(boolean arg) {
             if(arg) addArg("-omit-excepting-unit-edges");
         }
@@ -500,6 +519,10 @@ public class AntTask extends MatchingTask {
   
         public void setsubtract_gc(boolean arg) {
             if(arg) addArg("-subtract-gc");
+        }
+  
+        public void setno_writeout_body_releasing(boolean arg) {
+            if(arg) addArg("-no-writeout-body-releasing");
         }
   
         public Object createp_jb() {
@@ -1350,6 +1373,12 @@ public class AntTask extends MatchingTask {
             addArg("-p");
             addArg("cg.spark");
             addArg("geom-blocking:"+(arg?"true":"false"));
+          }
+      
+          public void setgeom_app_only(boolean arg) {
+            addArg("-p");
+            addArg("cg.spark");
+            addArg("geom-app-only:"+(arg?"true":"false"));
           }
       
           public void setpropagator(String arg) {

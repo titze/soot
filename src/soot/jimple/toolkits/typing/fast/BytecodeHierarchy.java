@@ -20,8 +20,22 @@
  */
 package soot.jimple.toolkits.typing.fast;
 
-import java.util.*;
-import soot.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Deque;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
+
+import soot.ArrayType;
+import soot.IntType;
+import soot.IntegerType;
+import soot.NullType;
+import soot.PrimType;
+import soot.RefType;
+import soot.Scene;
+import soot.SootClass;
+import soot.Type;
 
 /**
  * @author Ben Bellamy
@@ -124,6 +138,8 @@ public class BytecodeHierarchy implements IHierarchy
 			LinkedList<Type> r = new LinkedList<Type>();
 			if ( ts.isEmpty() )
 			{
+				// From Java Language Spec 2nd ed., Chapter 10, Arrays
+				r.add(RefType.v("java.lang.Object"));
 				r.add(RefType.v("java.io.Serializable"));
 				r.add(RefType.v("java.lang.Cloneable"));
 			}
@@ -226,16 +242,16 @@ public class BytecodeHierarchy implements IHierarchy
 			child, ancestor);
 	}
 	
-	private static LinkedList<RefType> superclassPath(RefType t)
+	private static Deque<RefType> superclassPath(RefType t)
 	{
-		LinkedList<RefType> r = new LinkedList<RefType>();
+		Deque<RefType> r = new LinkedList<RefType>();
 		r.addFirst(t);
 		
 		SootClass sc = t.getSootClass();
 		while ( sc.hasSuperclass() )
 		{
 			sc = sc.getSuperclass();
-			r.addFirst((RefType)sc.getType());
+			r.addFirst(sc.getType());
 		}
 		
 		return r;
@@ -243,8 +259,11 @@ public class BytecodeHierarchy implements IHierarchy
 	
 	public static RefType lcsc(RefType a, RefType b)
 	{
-		LinkedList<RefType> pathA = superclassPath(a),
-			pathB = superclassPath(b);
+		if (a == b)
+			return a;
+		
+		Deque<RefType> pathA = superclassPath(a);
+		Deque<RefType> pathB = superclassPath(b);
 		RefType r = null;
 		while ( !(pathA.isEmpty() || pathB.isEmpty()) 
 			&& TypeResolver.typesEqual(pathA.getFirst(), pathB.getFirst()) )

@@ -20,12 +20,42 @@
  */
 package soot.jimple.toolkits.typing.fast;
 
-import java.util.*;
-import soot.*;
-import soot.jimple.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+
+import soot.ArrayType;
+import soot.BooleanType;
+import soot.ByteType;
+import soot.CharType;
+import soot.IntType;
+import soot.IntegerType;
+import soot.Local;
+import soot.PatchingChain;
+import soot.RefType;
+import soot.ShortType;
+import soot.Type;
+import soot.Unit;
+import soot.Value;
+import soot.jimple.ArrayRef;
+import soot.jimple.AssignStmt;
+import soot.jimple.BinopExpr;
+import soot.jimple.CastExpr;
+import soot.jimple.DefinitionStmt;
+import soot.jimple.InvokeStmt;
+import soot.jimple.Jimple;
+import soot.jimple.JimpleBody;
+import soot.jimple.NegExpr;
+import soot.jimple.NewExpr;
+import soot.jimple.SpecialInvokeExpr;
+import soot.jimple.Stmt;
 import soot.jimple.toolkits.typing.Util;
-import soot.toolkits.graph.*;
-import soot.toolkits.scalar.*;
+import soot.toolkits.graph.ExceptionalUnitGraph;
+import soot.toolkits.scalar.LocalDefs;
+import soot.toolkits.scalar.SimpleLiveLocals;
+import soot.toolkits.scalar.SmartLocalDefs;
 
 /**
  * New Type Resolver by Ben Bellamy (see 'Efficient Local Type Inference'
@@ -47,8 +77,8 @@ public class TypeResolver
 {
 	private JimpleBody jb;
 	
-	private List<DefinitionStmt> assignments;
-	private HashMap<Local, List<DefinitionStmt>> depends;
+	private final List<DefinitionStmt> assignments;
+	private final HashMap<Local, List<DefinitionStmt>> depends;
 	
 	public TypeResolver(JimpleBody jb)
 	{
@@ -138,7 +168,7 @@ public class TypeResolver
 			}
 			v.setType(t);
 		}
-			
+		
 		tg = this.typePromotion(tg);
 		if ( tg  == null )
 			// Use original soot algorithm for inserting casts
@@ -171,16 +201,32 @@ public class TypeResolver
 		public Value visit(Value op, Type useType, Stmt stmt)
 		{
 			Type t = AugEvalFunction.eval_(this.tg, op, stmt, this.jb);
-
+			
 			if ( this.h.ancestor(useType, t) )
 				return op;
 			
 			this.count++;
-			
+
 			if ( countOnly )
 				return op;
 			else
 			{
+				// If we're referencing an array of the base type java.lang.Object,
+				// we also need to fix the type of the assignment's target variable.
+				if (stmt.containsArrayRef()
+						&& stmt.getArrayRef().getBase() == op
+						&& stmt instanceof DefinitionStmt) {
+					Type baseType = tg.get((Local) stmt.getArrayRef().getBase());
+					DefinitionStmt defStmt = (DefinitionStmt) stmt;
+					if (baseType instanceof RefType && defStmt.getLeftOp() instanceof Local) {
+						RefType rt = (RefType) baseType;
+						if (rt.getSootClass().getName().equals("java.lang.Object")
+								|| rt.getSootClass().getName().equals("java.io.Serializable")
+								|| rt.getSootClass().getName().equals("java.lang.Cloneable"))
+							tg.set((Local) ((DefinitionStmt) stmt).getLeftOp(), ((ArrayType) useType).getElementType());
+					}
+				}
+				
 				Local vold;
 				if ( !(op instanceof Local) )
 				{
@@ -318,7 +364,7 @@ public class TypeResolver
 					= this.applyAssignmentConstraints(tg, ef, h);
 				if ( sigma.isEmpty() )
 					return null;
-				tg = sigma.iterator().next();			
+				tg = sigma.iterator().next();
 				uv.typingChanged = false;
 				uc.check(tg, uv);
 				if ( uv.fail )
@@ -407,7 +453,7 @@ public class TypeResolver
 			{
 				DefinitionStmt stmt = wl.removeFirst();
 				Value lhs = stmt.getLeftOp(), rhs = stmt.getRightOp();
-
+				
 				Local v;
 				if ( lhs instanceof Local )
 					v = (Local)lhs;
@@ -416,7 +462,7 @@ public class TypeResolver
 				
 				Type told = tg.get(v);
 				
-				Collection<Type> eval = ef.eval(tg, rhs, stmt);
+				Collection<Type> eval = new ArrayList<Type>(ef.eval(tg, rhs, stmt));
 				
 				for ( Type t_ : eval )
 				{
@@ -436,7 +482,7 @@ public class TypeResolver
 					}
 					
 					Collection<Type> lcas = h.lcas(told, t_);
-				
+					
 					for ( Type t : lcas )
 						if ( ! typesEqual(t, told) )
 						{
@@ -483,7 +529,7 @@ public class TypeResolver
 	private void split_new()
 	{
 		ExceptionalUnitGraph graph = new ExceptionalUnitGraph(this.jb);
-		SimpleLocalDefs defs = new SimpleLocalDefs(graph);
+		LocalDefs defs = new SmartLocalDefs(graph,new SimpleLiveLocals(graph));
 		// SimpleLocalUses uses = new SimpleLocalUses(graph, defs);
 		PatchingChain<Unit> units = this.jb.getUnits();
 		Stmt[] stmts = new Stmt[units.size()];

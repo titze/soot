@@ -54,6 +54,7 @@ import soot.tagkit.CodeAttribute;
 import soot.tagkit.Tag;
 import soot.toolkits.exceptions.PedanticThrowAnalysis;
 import soot.toolkits.exceptions.ThrowAnalysis;
+import soot.toolkits.exceptions.ThrowAnalysisFactory;
 import soot.toolkits.graph.ExceptionalUnitGraph;
 import soot.toolkits.graph.UnitGraph;
 import soot.toolkits.scalar.FlowSet;
@@ -77,6 +78,7 @@ import soot.util.HashChain;
  *  @see soot.jimple.JimpleBody
  *  @see soot.baf.BafBody
  */
+@SuppressWarnings("serial")
 public abstract class Body extends AbstractHost implements Serializable
 {
     /** The method associated with this Body. */
@@ -234,7 +236,7 @@ public abstract class Body extends AbstractHost implements Serializable
         if (Options.v().debug() || Options.v().validate()) {
             validateUses();
             validateValueBoxes();
-            checkInit();
+            //checkInit();
             checkTypes();
             checkLocals();
         }
@@ -342,13 +344,9 @@ public abstract class Body extends AbstractHost implements Serializable
         // "remove-unreachable-traps" option to true.
         ThrowAnalysis throwAnalysis = PedanticThrowAnalysis.v();
         UnitGraph g = new ExceptionalUnitGraph(this, throwAnalysis, false);
-        
         LocalDefs ld = new SmartLocalDefs(g, new SimpleLiveLocals(g));
 
-        Iterator<Unit> unitsIt = getUnits().iterator();
-        while (unitsIt.hasNext())
-        {
-            Unit u = unitsIt.next();
+        for (Unit u : getUnits()) {
             Iterator<ValueBox> useBoxIt = u.getUseBoxes().iterator();
             while (useBoxIt.hasNext())
             {
@@ -770,11 +768,10 @@ public abstract class Body extends AbstractHost implements Serializable
 	}
 	throw new RuntimeException("Warning: Bad types"+errorSuffix+" in "+getMethod());
     }
-
-    @SuppressWarnings("unchecked")
+    
 	public void checkInit() {
         ExceptionalUnitGraph g = new ExceptionalUnitGraph
-	    (this, PedanticThrowAnalysis.v(), false);
+	    (this, ThrowAnalysisFactory.checkInitThrowAnalysis(), false);
 
 		InitAnalysis analysis=new InitAnalysis(g);
 		for (Unit s : getUnits()) {
