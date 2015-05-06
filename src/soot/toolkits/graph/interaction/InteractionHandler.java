@@ -177,6 +177,7 @@ public class InteractionHandler {
             this.wait();
         }
         catch (InterruptedException e){
+        	Thread.currentThread().interrupt();
         }
         
     }

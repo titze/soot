@@ -329,6 +329,7 @@ public class SynchObliviousMhpAnalysis implements MhpTester, Runnable
 			}
 			catch(InterruptedException ie)
 			{
+				Thread.currentThread().interrupt();
 				return true;
 			}
 		}
@@ -351,6 +352,7 @@ public class SynchObliviousMhpAnalysis implements MhpTester, Runnable
 			}
 			catch(InterruptedException ie)
 			{
+				Thread.currentThread().interrupt();
 				return true;
 			}
 		}
@@ -397,6 +399,7 @@ public class SynchObliviousMhpAnalysis implements MhpTester, Runnable
 			}
 			catch(InterruptedException ie)
 			{
+				Thread.currentThread().interrupt();
 				return;
 			}
 		}
@@ -433,6 +436,7 @@ public class SynchObliviousMhpAnalysis implements MhpTester, Runnable
 			}
 			catch(InterruptedException ie)
 			{
+				Thread.currentThread().interrupt();
 				return null;
 			}
 		}
@@ -471,6 +475,7 @@ public class SynchObliviousMhpAnalysis implements MhpTester, Runnable
 			}
 			catch(InterruptedException ie)
 			{
+				Thread.currentThread().interrupt();
 				return null;
 			}
 		}

@@ -410,6 +410,9 @@ public final class OnFlyCallGraphBuilder
     }
     public void processReachables() {
         while(true) {
+        	if (Thread.interrupted()){ 
+        		throw new RuntimeException("Interrupting");
+        	}
             if( !worklist.hasNext() ) {
                 rm.update();
                 if( !worklist.hasNext() ) break;
