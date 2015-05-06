@@ -50,17 +50,35 @@ public final class HybridPointsToSet extends PointsToSetInternal {
         boolean ret = false;
         TypeManager typeManager = pag.getTypeManager();
         if( other.bits != null ) {
+        	boolean error = false;
+        	BitVector mask = null;
+        	if( !typeManager.castNeverFails( other.getType(), this.getType() ) ) {
+        		try {
+        			mask = typeManager.get( this.getType() );
+        		} catch (RuntimeException e) {
+        			// Type mask for this not found (i.e., class is not analyzed, e.g., not in the sources)
+        			error = true;
+        			System.err.println("Cannot get Type mask for " + this.getType());
+        			System.err.println("other: " + other.getType() + ", this: " + this.getType());
+        			System.err.println("other.bits: " + other.bits);
+        		}
+        	}
             convertToBits();
             if( exclude != null ) {
                 exclude.convertToBits();
             }
-            BitVector mask = null;
+            //BitVector mask = null;
             if( !typeManager.castNeverFails( other.getType(), this.getType() ) ) {
                 mask = typeManager.get( this.getType() );
             }
 
             BitVector ebits = ( exclude==null ? null : exclude.bits );
             ret = bits.orAndAndNot( other.bits, mask, ebits );
+            if (error) {
+            	System.err.println("this.bits: " + this.bits);
+            	System.err.println("exclude.bits: " + (exclude==null?"object_null":exclude.bits));
+            	System.err.println("Returning " + ret);
+            }
         } else {
            	for (int i = 0; i < nodes.length; i++) {
            		if( other.nodes[i] == null ) break;

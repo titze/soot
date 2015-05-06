@@ -1,5 +1,5 @@
-// 
-// (c) 2012 University of Luxembourg - Interdisciplinary Centre for 
+//
+// (c) 2012 University of Luxembourg - Interdisciplinary Centre for
 // Security Reliability and Trust (SnT) - All rights reserved
 //
 // Author: Alexandre Bartel
@@ -15,7 +15,7 @@
 // GNU General Public License for more details.
 //
 // You should have received a copy of the GNU General Public License
-// along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 //
 
 package soot.dexpler;
@@ -53,9 +53,9 @@ public abstract class DexTransformer extends BodyTransformer {
 	/**
 	 * Collect definitions of l in body including the definitions of aliases of
 	 * l.
-	 * 
+	 *
 	 * In this context an alias is a local that propagates its value to l.
-	 * 
+	 *
 	 * @param l
 	 *            the local whose definitions are to collect
 	 * @param localDefs
@@ -103,7 +103,7 @@ public abstract class DexTransformer extends BodyTransformer {
 
 	/**
 	 * Convenience method that collects all definitions of l.
-	 * 
+	 *
 	 * @param l
 	 *            the local whose definitions are to collect
 	 * @param localDefs
@@ -115,9 +115,9 @@ public abstract class DexTransformer extends BodyTransformer {
 			Body body) {
 		List<Unit> defs = new ArrayList<Unit>();
 		for (Unit u : body.getUnits()) {
-			if (Thread.interrupted()){ 
-				throw new RuntimeException("Interrupting");
-			}
+        	if (Thread.interrupted()){
+        		throw new RuntimeException("Interrupting");
+        	}
 			List<Unit> defsOf = localDefs.getDefsOfAt(l, u);
 			if (defsOf != null)
 				defs.addAll(defsOf);
@@ -227,7 +227,7 @@ public abstract class DexTransformer extends BodyTransformer {
 					}
 				} else if (r instanceof CastExpr) {
 					Type t = (((CastExpr) r).getCastType());
-					Debug.printDbg("atype cast: ", t);					
+					Debug.printDbg("atype cast: ", t);
 					if (t instanceof ArrayType) {
 						ArrayType at = (ArrayType) t;
 						t = at.getArrayElementType();
@@ -289,7 +289,7 @@ public abstract class DexTransformer extends BodyTransformer {
 			if (aType != null)
 			    break;
 		} // loop
-		
+
 		if (depth == 0 && aType == null)
 			throw new RuntimeException(
 					"ERROR: could not find type of array from statement '"

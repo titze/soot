@@ -89,9 +89,17 @@ public final class CallGraphBuilder
             if( receivers != null) for( Iterator receiverIt = receivers.iterator(); receiverIt.hasNext(); ) {     
                 final Local receiver = (Local) receiverIt.next();
                 final PointsToSet p2set = pa.reachingObjects( receiver );
-                for( Iterator typeIt = p2set.possibleTypes().iterator(); typeIt.hasNext(); ) {
-                    final Type type = (Type) typeIt.next();
-                    ofcgb.addType( receiver, momc.context(), type, null );
+//                for( Iterator typeIt = p2set.possibleTypes().iterator(); typeIt.hasNext(); ) {
+//                    final Type type = (Type) typeIt.next();
+//                    ofcgb.addType( receiver, momc.context(), type, null );
+//                }
+                if (p2set.isEmpty()) {
+                	ofcgb.addType( receiver, momc.context(), receiver.getType(), null );
+                } else {
+                	for( Iterator typeIt = p2set.possibleTypes().iterator(); typeIt.hasNext(); ) {
+                		final Type type = (Type) typeIt.next();
+                		ofcgb.addType( receiver, momc.context(), type, null );
+                	} 
                 }
             }
             List stringConstants = (List) ofcgb.methodToStringConstants().get(momc.method());
